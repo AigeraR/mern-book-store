@@ -28,4 +28,8 @@ router.get('/category/:category', bookController.getBooksByCategory);
 //best seller
 router.get('/bestsellers', bookController.getBestsellerBooks);
 
+// Get books by publisher
+router.get('/publisher/:publisherName', bookController.getBooksByPublisher);
+
+
 module.exports = router;

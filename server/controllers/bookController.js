@@ -117,3 +117,17 @@ exports.getBooksByCategory = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+//get all books by publisher
+exports.getBooksByPublisher = async (req, res) => {
+    try {
+        const publisherName = req.params.publisherName;
+
+        // Находим все книги с указанным издательством
+        const books = await Book.find({ publisher: publisherName });
+
+        res.json(books);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};

@@ -3,32 +3,26 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navigation = () => {
     const categorys = [
-        { name: "Fiction", link: "/fiction" },
-        { name: "Non-Fiction", link: "/non-fiction" },
-        { name: "Comics", link: "/comics" },
-        { name: "Biography", link: "/biography" },
-        { name: "Children", link: "/children" },
+        { name: "Психология", link: "/fiction" },
+        { name: "История", link: "/non-fiction" },
+        { name: "Комедия", link: "/comics" },
+        { name: "Наука", link: "/biography" },
+        { name: "Детские", link: "/children" },
     ];
 
-    return (
-        <nav className="flex items-center justify-between px-5 py-2 ">
-            <div className="flex space-x-5 justify-center items-center">
-                <p className="font-open-sans">Каталог</p>
-                <GiHamburgerMenu className='text-2xl' />
+    return ( 
+        <div className="p-2">
+            <div className=" font-open-sans">
+                <div className='flex font-open-sans text-sm xl:text-lg lg:text-md   text-gray-700 '>
+                    {categorys.map((category) => (
+                        <React.Fragment key={category.name}>
+                            <a href={category.link} className='hover:text-text-color hover:border-indigo-600   md:px-2 lg:px-4 '>{category.name}</a>
+                        </React.Fragment>
+                    ))}
                 </div>
-            <div className="text font-open-sans space-x-12">
-                {categorys.map((category) => (
-                    <React.Fragment key={category.name}>
-                        <a href={category.link}>{category.name}</a>
-                    </React.Fragment>
-                ))}
+                
             </div>
-            <div className="best-sellers">
-                <button className='bg-orange-400 text-white font-bold font-open-sans px-5 py-2 rounded-md'>
-                    <a href="/best-sellers">Best Sellers</a>
-                </button>
-            </div>
-        </nav>
+        </div>
     );
 }
 

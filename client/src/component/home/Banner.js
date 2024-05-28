@@ -62,7 +62,7 @@ const BannerCarousel = () => {
   };
 
     return (
-    <div className="relative container mx-auto mt-3  w-full">
+    <div className=" relative container mx-auto mt-3  w-full">
       <Slider {...settings}>
         {bannerImages.map((image, index) => (
           <div key={index} className="flex items-center justify-center h-[300px] bg-gray-200">

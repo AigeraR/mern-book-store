@@ -5,6 +5,7 @@ import Header from '../header/Header';
 import Banner from './Banner';
 import BestSeller from './BestSeller';
 import Authors from './Authors';
+import Publishers from './Publishers';
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Banner/>
       <BestSeller/>
       <Authors/>
+      <Publishers />
       {/* <Authors/> */}
     </div>
   );
