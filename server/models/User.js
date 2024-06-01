@@ -10,7 +10,15 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true, // Удаляет начальные и конечные пробелы из email
+        validate: {
+            validator: function(v) {
+                // Используем регулярное выражение для проверки формата email
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            },
+            message: props => `${props.value} не является корректным email адресом`
+        }
     },
     password: {
         type: String,

@@ -12,7 +12,6 @@ exports.getAllAuthors = async (req, res) => {
     }
 };
 
-// Create a new author
 
 // Создание автора или получение существующего по имени
 exports.createAuthor = async (req, res) => {

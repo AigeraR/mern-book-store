@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from './Logo';
 import SearchBar from './SearchBar';
 import UserCart from './UserCart';
-import Navigation from './Navigation';
 import SmallBanner from './SmallBanner';
 import Nav from './Nav';
 import Example from './NavListMenu';
-import { useEffect, useState } from 'react';
+
 const Header = () => {
   const [userName, setUserName] = useState('');
 
@@ -39,22 +38,11 @@ const Header = () => {
         </div>
       </div>
       <Example userName={userName}/>
-      <div className='flex p-2 sm:w-2  xl:hidden lg:hidden md:hidden items-center justify-center text-sm'>
+      <div className='flex p-2 sm:w-2 xl:hidden lg:hidden md:hidden items-center justify-center text-sm'>
         <SearchBar className='sm:w-8' />
       </div>
-      {/* <div className="flex items-center justify-end space-x-4 p-4">
-        {userName ? (
-          <div className="flex items-center space-x-2">
-            <span className="text-2xl">{userName}</span>
-          </div>
-        ) : (
-          <div className="flex space-x-4">
-            <button className="text-indigo-500">Войти</button>
-            <button className="text-indigo-500">Регистрация</button>
-          </div>
-        )}
-      </div> */}
     </header>
   );
 }
+
 export default Header;
