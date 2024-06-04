@@ -2,6 +2,8 @@ import { Fragment, useState } from 'react'
 import Banner from '../home/Banner'
 import SearchBar from './SearchBar';
 import { MdAccountCircle } from "react-icons/md";
+import { Link } from 'react-router-dom';
+import Logo from './Logo';
 
 import {
   Dialog,
@@ -20,6 +22,7 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Navigation from './Navigation'
+import UserCart from './UserCart';
 
 const navigation = {
   categories: [
@@ -92,7 +95,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example({userName}) {
+export default function Example({ userName, cartItemCount }) {
   const [open, setOpen] = useState(false)
 
 
@@ -228,9 +231,8 @@ export default function Example({userName}) {
 
                 {/* Logo */}
                 <div className="ml-4 flex  xl:hidden md:hidden lg:hidden">
-                  <a href="#">
-                    <span className="sr-only">Your Company</span>
-                    <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+                  <a href="/">
+                    <Logo/>
                   </a>
                 </div>
 
@@ -319,29 +321,17 @@ export default function Example({userName}) {
 
                 </PopoverGroup>
                 <div className='items-center justify-center hidden xl:flex lg:flex md:flex'>
-                  <div className='ml-32 md:ml-2 lg:ml-51 xl:ml-32 items-center justify-center'>
+                  <div className='ml-32 md:ml-2 lg:ml-51 xl:ml-32 items-center justify-center '>
                     <Navigation />
                   </div>
                   <div className='ml-72 md:ml-0 lg:ml-52 text-sm'>
-                      <a href='/best-sellers' className='flex sm:inline-flex justify-center items-center bg-green-500 hover:bg-green-600 active:bg-green-700 focus-visible:ring ring-green-300 text-white font-semibold text-center rounded-md outline-none transition duration-100 px-5 py-2'>Бестселлеры</a>
+                    <a href='/best-sellers' className='flex sm:inline-flex justify-center items-center bg-orange-500 hover:bg-green-600 active:bg-green-700 focus-visible:ring ring-green-300 text-white font-semibold text-center rounded-md outline-none transition duration-100 px-5 py-2'>Бестселлеры</a>
                   </div>
-                  </div>
-
+                </div>
                 <div className="ml-auto flex items-center ">
+                  <div className="flex xl:hidden lg:hidden md:hidden justify-between items-center p-4">
 
-                  <div className="ml-4  lg:ml-6 flex lg:hidden xl:hidden md:hidden ">
-                    <a href="/login" className="group  flex items-center p-2">
-                      <MdAccountCircle className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500" />
-                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{userName}</span>
-                    </a>
-                    <a href="#" className="group -m-2 flex items-center p-2">
-                      <ShoppingBagIcon
-                        className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                        aria-hidden="true"
-                      />
-                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                      <span className="sr-only">items in cart, view bag</span>
-                    </a>
+                    <UserCart userName={userName} cartItemCount={cartItemCount} />
                   </div>
                 </div>
               </div>

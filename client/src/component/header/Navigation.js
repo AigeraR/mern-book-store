@@ -12,11 +12,11 @@ const Navigation = () => {
 
     return ( 
         <div className="p-2">
-            <div className=" font-open-sans">
-                <div className='flex font-open-sans text-sm xl:text-lg lg:text-md   text-gray-700 '>
+            <div className="">
+                <div className='flex font-open-sans text-md  text-gray-700 '>
                     {categorys.map((category) => (
                         <React.Fragment key={category.name}>
-                            <a href={category.link} className='hover:text-text-color hover:border-indigo-600   md:px-2 lg:px-4 '>{category.name}</a>
+                            <a href={category.link} className='hover:text-text-color font-open-sans hover:border-indigo-600  md:px-2 lg:px-4 '>{category.name}</a>
                         </React.Fragment>
                     ))}
                 </div>

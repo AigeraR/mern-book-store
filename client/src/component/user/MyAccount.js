@@ -4,6 +4,8 @@ import axios from 'axios';
 const MyAccount = () => {
   const [user, setUser] = useState({ name: '', email: '', phone: '', role: '' });
   const [message, setMessage] = useState('');
+  const [passwords, setPasswords] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
+  const [passwordMessage, setPasswordMessage] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -35,12 +37,32 @@ const MyAccount = () => {
     }
   };
 
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      setPasswordMessage('Новые пароли не совпадают.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const response = await axios.put('http://localhost:5000/api/auth/updatePassword', passwords, config);
+      setPasswordMessage('Пароль успешно обновлен.');
+      setPasswords({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (error) {
+      console.log(error);
+      setPasswordMessage('Ошибка при обновлении пароля.');
+    }
+  };
+
   return (
     <div className="mt-4">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Мой аккаунт</h2>
       {message && <p className="mb-2 text-green-600">{message}</p>}
-      <div className='grid grid-cols-2 gap-8'>
-        <form onSubmit={handleUpdate} className="bg-gray-100 p-6 rounded-lg shadow-lg">
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <form onSubmit={handleUpdate} className=" p-6 bg-white rounded-md shadow-md">
+        <h2 className="text-md font-semibold mb-4 text-orange-400">Мои данные</h2>
           <div className="mb-4">
             <label className="block mb-2 font-semibold text-gray-800">Имя:</label>
             <input
@@ -72,12 +94,41 @@ const MyAccount = () => {
             Обновить
           </button>
         </form>
-        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-          <h1 className="text-gray-800 font-semibold">Данные</h1>
-          <p><span className="font-semibold text-gray-800">Имя:</span> {user.name}</p>
-          <p><span className="font-semibold text-gray-800">Email:</span> {user.email}</p>
-          <p><span className="font-semibold text-gray-800">Role:</span> {user.role}</p>
-          <p><span className="font-semibold text-gray-800">Телефон:</span> {user.phone || 'не указан'}</p>
+        <div className="p-6 bg-white rounded-md shadow-md">
+          <h2 className='text-md font-semibold mb-4 text-orange-400'>Обновить пароль</h2>
+          {passwordMessage && <p className="mb-2 text-red-600">{passwordMessage}</p>}
+          <form onSubmit={handleChangePassword}>
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold text-gray-800">Старый пароль:</label>
+              <input
+                type="password"
+                className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500"
+                value={passwords.oldPassword}
+                onChange={(e) => setPasswords({ ...passwords, oldPassword: e.target.value })}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold text-gray-800">Новый пароль:</label>
+              <input
+                type="password"
+                className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500"
+                value={passwords.newPassword}
+                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold text-gray-800">Подтвердите новый пароль:</label>
+              <input
+                type="password"
+                className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500"
+                value={passwords.confirmPassword}
+                onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
+              />
+            </div>
+            <button type="submit" className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+              Обновить пароль
+            </button>
+          </form>
         </div>
       </div>
     </div>

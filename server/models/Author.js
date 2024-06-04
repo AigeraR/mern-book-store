@@ -1,4 +1,3 @@
-// server/models/Author.js
 const mongoose = require('mongoose');
 
 const authorSchema = new mongoose.Schema({
@@ -14,9 +13,9 @@ const authorSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    img:{
-      type: String,
-      required: true
+    img: {
+        type: String,
+        required: true
     },
     books: [{
         type: mongoose.Schema.Types.ObjectId,

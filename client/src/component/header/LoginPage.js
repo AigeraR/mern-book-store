@@ -14,6 +14,7 @@ const LoginPage = () => {
         email,
         password,
       });
+      
 
       const { token, name } = response.data; // Предполагая, что сервер возвращает токен и имя пользователя
 

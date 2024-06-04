@@ -1,4 +1,3 @@
-// server/models/Book.js
 const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
@@ -7,8 +6,9 @@ const bookSchema = new mongoose.Schema({
         required: true
     },
     author: {
-        type: String,
-        ref: 'Author'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Author',
+        required: true
     },
     description: {
         type: String,
@@ -23,8 +23,13 @@ const bookSchema = new mongoose.Schema({
         required: true
     },
     category: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
         required: true
+    },
+    subcategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subcategory'
     },
     image: {
         type: String,
@@ -37,6 +42,11 @@ const bookSchema = new mongoose.Schema({
     isBestseller: {
         type: Boolean,
         default: false
+    },
+    publisher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Publisher',
+        required: true
     }
 });
 

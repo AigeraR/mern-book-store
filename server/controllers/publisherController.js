@@ -1,3 +1,4 @@
+// server/controllers/publisherController.js
 const Publisher = require('../models/Publisher');
 
 exports.getAllPublishers = async (req, res) => {
@@ -10,8 +11,8 @@ exports.getAllPublishers = async (req, res) => {
 };
 
 exports.createPublisher = async (req, res) => {
-    const { name, logoUrl } = req.body;
-    const newPublisher = new Publisher({ name, logoUrl });
+    const { name, address, phone } = req.body;
+    const newPublisher = new Publisher({ name, address, phone });
 
     try {
         const savedPublisher = await newPublisher.save();

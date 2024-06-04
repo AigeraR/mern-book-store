@@ -2,6 +2,12 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const addressSchema = new mongoose.Schema({
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true }
+});
+
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -24,6 +30,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String,
+        required: false
+    },
+    address: [addressSchema],
     role: {
         type: String,
         enum: ['user', 'admin'],

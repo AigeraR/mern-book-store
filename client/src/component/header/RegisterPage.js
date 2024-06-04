@@ -8,6 +8,8 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
+
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -18,9 +20,13 @@ const RegisterPage = () => {
         password,
         confirmPassword,
       });
-
-      localStorage.setItem('userName', name);
-      navigate('/');
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      console.log(localStorage.getItem('token'));
+      // localStorage.setItem('userName', name);
+      //show user message success registration
+      setMessage('Регистрация прошла успешно, вы можете войти');
+      navigate('/login');
     } catch (error) {
       if (error.response && error.response.data.message) {
         setErrorMessage(error.response.data.message);

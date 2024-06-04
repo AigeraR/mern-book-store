@@ -1,13 +1,14 @@
 // server/controllers/authController.js
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
 
 const secretKey = process.env.JWT_SECRET;
 
 // Register a new user
 
 exports.registerUser = async (req, res) => {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password,phone,address, confirmPassword } = req.body;
 
     if (password !== confirmPassword) {
         return res.status(400).json({ message: 'Passwords do not match' });
@@ -23,6 +24,8 @@ exports.registerUser = async (req, res) => {
         const user = await User.create({
             name,
             email,
+            phone,
+            address,
             password
         });
 
@@ -34,6 +37,8 @@ exports.registerUser = async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
+            address: user.address,
             role: user.role,
             token
         });
@@ -60,6 +65,8 @@ exports.loginUser = async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
+            address: user.address,
             role: user.role,
             token
         });
@@ -105,12 +112,12 @@ exports.logoutUser = (req, res) => {
 
 //udate user
 exports.updateUser = async (req, res) => {
-    const { name, email, phone } = req.body;
+    const { name, email, phone, address } = req.body;
 
     try {
         const updatedUser = await User.findByIdAndUpdate(
             req.user.id,
-            { name, email, phone },
+            { name, email, phone, address },
             { new: true }
         );
 
@@ -120,14 +127,61 @@ exports.updateUser = async (req, res) => {
     }
 };
 
-exports.logoutUser = (req, res) => {
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    });
-    res.status(200).json({ message: 'Logged out successfully' });
+// Обновление пароля пользователя
+exports.updatePassword = async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!(await user.matchPassword(oldPassword))) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+  
+exports.addAddress = async (req, res) => {
+    const { street, city, state } = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.address.push({ street, city, state });
+        await user.save();
+
+        res.status(200).json(user.addresses);
+    } catch (error) {
+        console.error(error); // Логирование ошибки
+        res.status(500).json({ message: 'Internal server error' });
+    }
 };
 
+// Функция для получения адресов пользователя
+exports.getUserAddresses = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
 
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-  
+        res.status(200).json(user.address);
+    } catch (error) {
+        console.error(error); // Логирование ошибки
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};

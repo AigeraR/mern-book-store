@@ -5,9 +5,14 @@ import UserCart from './UserCart';
 import SmallBanner from './SmallBanner';
 import Nav from './Nav';
 import Example from './NavListMenu';
+import { MdAccountCircle } from "react-icons/md";
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
+
 
 const Header = () => {
   const [userName, setUserName] = useState('');
+  const cartItemCount = 3;
 
   useEffect(() => {
     const storedUserName = localStorage.getItem('userName');
@@ -37,7 +42,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <Example userName={userName}/>
+      <Example userName={userName} cartItemCount={cartItemCount} />
       <div className='flex p-2 sm:w-2 xl:hidden lg:hidden md:hidden items-center justify-center text-sm'>
         <SearchBar className='sm:w-8' />
       </div>

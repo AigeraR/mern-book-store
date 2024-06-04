@@ -13,11 +13,11 @@ const AccountPage = () => {
     return (
         <div>
             <Header />
-            <div className="grid grid-cols-4 mt-10  mr-12 ml-12">
-                <div className="col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-10 md:mt-0 mx-4">
+                <div className="md:col-span-1">
                     <Sidebar />
                 </div>
-                <div className="col-span-3 p-4 ml-4 bg-gray-100 rounded-md">
+                <div className="md:col-span-3 p-4  rounded-md">
                     <Routes>
                         <Route path="/" element={<MyAccount />} />
                         <Route path="/addresses" element={<Addresses />} />

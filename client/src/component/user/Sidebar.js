@@ -49,7 +49,7 @@ const Sidebar = () => {
     }
   };
 
-  const navLinkStyle = ({ isActive }) => isActive ? 'block py-2 px-4 bg-gray-200 rounded-md' : 'block py-2 px-4 hover:bg-gray-200 rounded-md';
+  const navLinkStyle = ({ isActive }) => isActive ? 'block py-2 px-4 bg-gray-200  rounded-md' : 'block py-2 px-4   rounded-md';
   const navLinks = [
     { text: 'Личный кабинет', to: "/account", icon: <AiOutlineUser className="inline-block mr-2" /> },
     { text: 'Адреса', to: "/account/addresses", icon: <FaRegAddressCard className="inline-block mr-2" /> },
@@ -59,14 +59,14 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="bg-white rounded-md shadow-md p-4">
+    <div className=" rounded-md shadow-md p-4">
       <div className="flex flex-col items-center mb-4">
         <div className="rounded-full overflow-hidden mb-2">
           {avatar ? (
-            <img src={avatar} alt="User Avatar" className="w-24 h-24 object-cover" />
+            <img src={avatar} alt="User Avatar" className="w-20 h-20 object-cover" />
           ) : (
-            <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-              <AiOutlineUser className="text-gray-500" />
+            <div className="w-12 h-12 bg-blue-300 flex items-center justify-center rounded-full">
+              <AiOutlineUser className="" />
             </div>
           )}
         </div>
@@ -78,19 +78,19 @@ const Sidebar = () => {
           id="avatar-upload"
         />
         <label htmlFor="avatar-upload" className="text-blue-500 cursor-pointer text-sm mb-2">Выбрать аватар</label>
-        <h1 className="text-xl font-bold font-open-sans">{userName}</h1>
+        <h1 className="text-lg font-semibold ">{userName}</h1>
       </div>
       <ul className="flex flex-col">
         {navLinks.map(({ text, to, icon }) => (
           <li key={to}>
             <NavLink to={to} className={navLinkStyle} end>
               {icon}
-              {text}
+              <span className="ml-2">{text}</span>
             </NavLink>
           </li>
         ))}
       </ul>
-      <button onClick={handleLogout} className="w-full mt-6 py-2 px-4 text-center bg-red-500 text-white rounded-md hover:bg-red-600">
+      <button onClick={handleLogout} className="w-full mt-6 py-2 px-4 text-center bg-red-600 text-white rounded-md hover:bg-red-700">
         Выйти
       </button>
     </div>

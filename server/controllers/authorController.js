@@ -12,22 +12,11 @@ exports.getAllAuthors = async (req, res) => {
     }
 };
 
-
-// Создание автора или получение существующего по имени
+// Create a new author
 exports.createAuthor = async (req, res) => {
     const { name, bio, birthdate, img } = req.body;
-
     try {
-        // Проверяем наличие автора с указанным именем
-        let author = await Author.findOne({ name });
-
-        // Если автор существует, возвращаем его данные
-        if (author) {
-            return res.status(200).json(author);
-        }
-
-        // Если автора нет, создаем нового
-        author = new Author({
+        const author = new Author({
             name,
             bio,
             birthdate,
@@ -40,7 +29,6 @@ exports.createAuthor = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
-
 
 // Get author by ID
 exports.getAuthorById = async (req, res) => {
