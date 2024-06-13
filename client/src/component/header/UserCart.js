@@ -1,31 +1,53 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiShoppingCart } from 'react-icons/fi';
-import { FaUserAlt } from "react-icons/fa";
-import { MdAccountCircle } from "react-icons/md";
-
+import { FaUserAlt } from 'react-icons/fa';
+import { MdAccountCircle } from 'react-icons/md';
 
 const UserCart = ({ cartItemCount, userName }) => {
+    const navigate = useNavigate(); 
+    const userRole = localStorage.getItem('role');
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('role');
+        navigate('/login');
+    };
+
+    const handleAdminPanel = () => {
+        navigate('/admin');
+    };
+
+    console.log('userName:', userName); // Debugging statement
+    console.log('userRole:', userRole); // Debugging statement
+
     return (
         <div className="flex items-center justify-end space-x-4">
             {userName ? (
-                        <Link to="/account" className="flex-col flex items-center justify-center space-y-1">
-                            <FaUserAlt className="h-4 w-4 xl:h-5 xl:w-5 lg:h-4 lg:w-4 md:h-4 md:w-4 text-blue-400 hover:text-red-500 " aria-hidden="true" />
-                            <span className="text-xs font-open-sans font-bold">Аккаунт</span>
+                userRole === 'user' ? (
+                    <Link to="/account" className="flex-col flex items-center justify-center space-y-1">
+                        <FaUserAlt className="h-4 w-4 xl:h-5 xl:w-5 lg:h-4 lg:w-4 md:h-4 md:w-4 text-blue-400 hover:text-red-500" aria-hidden="true" />
+                        <span className="text-xs font-open-sans font-bold">Аккаунт</span>
+                    </Link>
+                ) : (
+                    userRole === 'admin' && (
+                        <Link to="/admin" className="flex-col flex items-center justify-center space-y-1">
+                            <MdAccountCircle className="h-4 w-4 xl:h-5 xl:w-5 lg:h-4 lg:w-4 md:h-4 md:w-4 text-blue-400 hover:text-red-500" aria-hidden="true" />
+                            <span className="text-xs font-open-sans font-bold">Админ панель</span>
                         </Link>
+                    )
+                )
             ) : (
-                <>
-                    <div className='flex  items-center space-x-3'>
-                        <Link to="/login" className="text-xs font-medium text-gray-700 hover:text-gray-800 ">
-                            Войти
-                        </Link>
-                        <span className="inline-block h-6 w-px bg-gray-400" aria-hidden="true" />
-                        <Link to="/register" className="text-xs font-medium text-gray-700 hover:text-gray-800">
-                            Регистрация
-                        </Link>
-                    </div>
-                    
-                </>
+                <div className='flex items-center space-x-3'>
+                    <Link to="/login" className="text-xs font-medium text-gray-700 hover:text-gray-800">
+                        Войти
+                    </Link>
+                    <span className="inline-block h-6 w-px bg-gray-400" aria-hidden="true" />
+                    <Link to="/register" className="text-xs font-medium text-gray-700 hover:text-gray-800">
+                        Регистрация
+                    </Link>
+                </div>
             )}
             <div className="relative flex items-center">
                 <Link to="/cart" className="group flex items-center">
@@ -39,6 +61,6 @@ const UserCart = ({ cartItemCount, userName }) => {
             </div>
         </div>
     );
-}
+};
 
 export default UserCart;

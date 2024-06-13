@@ -12,6 +12,7 @@ import Delivery from './component/header/page/Delivery';
 import BooksByPublisher from './component/home/BooksByPublisher';
 import AccountPage from './component/user/AccountPage';
 import RegisterPage from './component/header/RegisterPage';
+import AdminPanel from './component/admin/AdminPanel';
 const App = () => {
   return (
     <Router>
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/delivery" element={<Delivery/>} />
           <Route path="/publisher/:publisherName" element={<BooksByPublisher />} />
           <Route path="/account/*" element={<AccountPage />} />
+          <Route path="/admin/*" element={<AdminPanel />} />
 
           {/* <Route path="/author/:id" component={<AuthorInfo/>} /> */}
         </Routes>

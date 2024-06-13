@@ -11,12 +11,12 @@ router.get('/getAuthors', authorController.getAllAuthors);
 router.post('/create', protect, admin, authorController.createAuthor);
 
 // Get a single author by ID
-router.get('/:id', authorController.getAuthorById);
+router.get('/getAuthorById/:id', authorController.getAuthorById);
 
 // Update an author by ID
-router.put('/:id', protect, admin, authorController.updateAuthor);
+router.put('/updateAuthorByID/:id', protect, admin, authorController.updateAuthor);
 
 // Delete an author by ID
-router.delete('/:id', protect, admin, authorController.deleteAuthor);
+router.delete('/deleteAuthorByID/:id', protect, admin, authorController.deleteAuthor);
 
 module.exports = router;

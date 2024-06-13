@@ -330,7 +330,6 @@ export default function Example({ userName, cartItemCount }) {
                 </div>
                 <div className="ml-auto flex items-center ">
                   <div className="flex xl:hidden lg:hidden md:hidden justify-between items-center p-4">
-
                     <UserCart userName={userName} cartItemCount={cartItemCount} />
                   </div>
                 </div>

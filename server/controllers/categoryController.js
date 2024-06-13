@@ -23,4 +23,22 @@ exports.createCategory = async (req, res) => {
     }
 };
 
+exports.updateCategory = async (req, res) => {
+    try {
+      const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.status(200).json(category);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  };
+  
+  // Delete a category
+  exports.deleteCategory = async (req, res) => {
+    try {
+      await Category.findByIdAndDelete(req.params.id);
+      res.status(200).json({ message: 'Category deleted' });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  };
 

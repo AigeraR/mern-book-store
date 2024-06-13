@@ -14,15 +14,19 @@ const LoginPage = () => {
         email,
         password,
       });
-      
 
-      const { token, name } = response.data; // Предполагая, что сервер возвращает токен и имя пользователя
+      const { token, name, role } = response.data; // Assuming server returns token, name, and role
 
-      if (token && name) {
+      if (token && name && role) { // Check that role is also included
         localStorage.setItem('token', token);
-        console.log(localStorage.getItem('token'));
         localStorage.setItem('userName', name);
-        navigate('/');
+        localStorage.setItem('role', role); // Make sure to set role
+
+        console.log('token:', localStorage.getItem('token'));
+        console.log('userName:', localStorage.getItem('userName'));
+        console.log('role:', localStorage.getItem('role'));
+          navigate('/');
+       
       } else {
         setErrorMessage('Неправильный email или пароль');
       }

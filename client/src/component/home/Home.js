@@ -6,15 +6,17 @@ import Banner from './Banner';
 import BestSeller from './BestSeller';
 import Authors from './Authors';
 import Publishers from './Publishers';
+import Books from './Books';
 
 const Home = () => {
   return (
     <div>
       <Header />
-      <Banner/>
-      <BestSeller/>
-      <Authors/>
+      <Banner />
+      <BestSeller />
+      <Authors />
       <Publishers />
+      <Books />
       {/* <Authors/> */}
     </div>
   );
