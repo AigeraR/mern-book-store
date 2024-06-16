@@ -1,10 +1,10 @@
-
 // server/controllers/categoryController.js
 const Category = require('../models/Category');
+const Subcategory = require('../models/Subcategory');
 
 exports.getAllCategories = async (req, res) => {
     try {
-        const categories = await Category.find();
+        const categories = await Category.find().populate('subcategories');
         res.json(categories);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -12,8 +12,8 @@ exports.getAllCategories = async (req, res) => {
 };
 
 exports.createCategory = async (req, res) => {
-    const { name, description, image,subcategories } = req.body;
-    const newCategory = new Category({ name, description, image,subcategories });
+    const { name, description, image, subcategories } = req.body;
+    const newCategory = new Category({ name, description, image, subcategories });
 
     try {
         const savedCategory = await newCategory.save();
@@ -25,20 +25,36 @@ exports.createCategory = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
     try {
-      const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      res.status(200).json(category);
+        const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('subcategories');
+        res.status(200).json(category);
     } catch (error) {
-      res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
     }
-  };
-  
-  // Delete a category
-  exports.deleteCategory = async (req, res) => {
-    try {
-      await Category.findByIdAndDelete(req.params.id);
-      res.status(200).json({ message: 'Category deleted' });
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  };
+};
 
+exports.deleteCategory = async (req, res) => {
+    try {
+        await Category.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: 'Category deleted' });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+//get subcategoryArray from categoryId
+
+exports.getSubcategoryArray = async (req, res) => {
+  try {
+      const categoryId = req.params.id;
+      const category = await Category.findById(categoryId).populate('subcategories');
+
+      if (!category) {
+          return res.status(404).json({ message: 'Category not found' });
+      }
+
+      res.json(category.subcategories);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
+
+    

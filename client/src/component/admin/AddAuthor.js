@@ -5,23 +5,36 @@ import { FaPlus } from "react-icons/fa";
 const AddAuthor = ({ handleAddAuthor }) => {
     const [name, setName] = useState('');
     const [bio, setBio] = useState('');
-    const [image, setImage] = useState('');
+    const [img, setImage] = useState('');
     const [error, setError] = useState('');
     const [open, setOpen] = useState(false);
+    const [birthdate, setBirthdate] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/author/addAuthor', { name, bio, image });
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            
+            // Проверка на пустые обязательные поля перед отправкой запроса
+            if (!name || !bio || !img || !birthdate) {
+                setError('Please fill in all fields.');
+                return;
+            }
+
+            const response = await axios.post('http://localhost:5000/api/author/create', { name, bio, img, birthdate }, config);
             handleAddAuthor(response.data);
             setName('');
             setBio('');
             setImage('');
+            setBirthdate('');
             setError('');
+            setOpen(false); // Закрыть форму после успешного добавления автора
         } catch (error) {
-            setError(error.message);
+            setError(error.response.data.message || 'An error occurred while adding the author.');
         }
     };
+    
 
     return (
         <div>
@@ -45,9 +58,16 @@ const AddAuthor = ({ handleAddAuthor }) => {
                         />
                         <input
                             type="text"
-                            value={image}
+                            value={img}
                             onChange={(e) => setImage(e.target.value)}
                             placeholder="Ссылка на изображение"
+                            className="border p-2 mb-2 w-full"
+                        />
+                        <input
+                            type="date"
+                            value={birthdate}
+                            onChange={(e) => setBirthdate(e.target.value)}
+                            placeholder="Дата рождения"
                             className="border p-2 mb-2 w-full"
                         />
                         <button type="submit" className="bg-green-500 text-white p-2 rounded-lg">Добавить</button>

@@ -10,4 +10,7 @@ router.post('/createCategory', protect, admin, categoryController.createCategory
 router.put('/updateCategory/:id', protect, admin, categoryController.updateCategory);
 router.delete('/deleteCategory/:id', protect, admin, categoryController.deleteCategory);
 
+//fetch subcategories from this category
+router.get('/getSubcategoryArray/:id',protect,admin, categoryController.getSubcategoryArray);   
+
 module.exports = router;

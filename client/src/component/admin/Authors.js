@@ -11,7 +11,6 @@ const Authors = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editAuthor, setEditAuthor] = useState(null);
-    
 
     useEffect(() => {
         const fetchAuthors = async () => {
@@ -30,8 +29,11 @@ const Authors = () => {
 
     const deleteAuthor = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/author/deleteAuthor/${id}`);
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.delete(`http://localhost:5000/api/author/deleteAuthorByID/${id}`, config);
             setAuthors(authors.filter((author) => author._id !== id));
+            setFilteredAuthors(filteredAuthors.filter((author) => author._id !== id));
         } catch (error) {
             console.error(error);
         }
@@ -43,12 +45,21 @@ const Authors = () => {
 
     const handleUpdateAuthor = async (id, updatedAuthor) => {
         try {
-            const response = await axios.put(`http://localhost:5000/api/author/updateAuthor/${id}`, updatedAuthor);
-            setAuthors(authors.map((author) => (author._id === id ? response.data : author)));
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            const response = await axios.put(`http://localhost:5000/api/author/updateAuthorByID/${id}`, updatedAuthor, config);
+            const updatedAuthors = authors.map((author) => (author._id === id ? response.data : author));
+            setAuthors(updatedAuthors);
+            setFilteredAuthors(updatedAuthors);
             setEditAuthor(null);
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const handleAddAuthor = (newAuthor) => {
+        setAuthors([...authors, newAuthor]);
+        setFilteredAuthors([...filteredAuthors, newAuthor]);
     };
 
     const handleCancelEdit = () => {
@@ -95,7 +106,7 @@ const Authors = () => {
                                 <td className="px-3 py-2 whitespace-nowrap text-xs">{author.name}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{author.bio}</td>
                                 <td className="px-3 py-2 whitespace-nowrap text-sm">
-                                    <img src={author.image} alt={author.name} className="w-16 h-16 object-cover" />
+                                    <img src={author.img} alt={author.name} className="w-16 h-16 object-cover" />
                                 </td>
                                 <td className="px-2 py-2 whitespace-nowrap text-sm justify-center space-x-2">
                                     <button onClick={() => deleteAuthor(author._id)} className="bg-red-500 text-white p-1.5 rounded-lg"><RiDeleteBin6Line className='h-4 w-4' /></button>
@@ -136,7 +147,7 @@ const Authors = () => {
                 </div>
             ) : (
                 <div className="flex justify-end mt-4">
-                    <AddAuthor />
+                    <AddAuthor handleAddAuthor={handleAddAuthor} />
                 </div>
             )}
         </div>

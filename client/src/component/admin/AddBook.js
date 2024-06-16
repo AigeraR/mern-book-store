@@ -42,6 +42,7 @@ const AddBook = ({ fetchBooks }) => {
       console.error('Error fetching authors:', error);
     }
   };
+
   const fetchCategories = async () => {
     const response = await axios.get('http://localhost:5000/api/category/getAllCategories');
     setCategories(response.data);
@@ -50,6 +51,17 @@ const AddBook = ({ fetchBooks }) => {
   const fetchSubcategories = async () => {
     const response = await axios.get(`http://localhost:5000/api/subcategory/getAll`);
     setSubcategories(response.data);
+  };
+
+  const loadSubcategories = async (categoryId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const response = await axios.get(`http://localhost:5000/api/category/getSubcategoryArray/${categoryId}`, config);
+      setSubcategories(response.data);
+    } catch (error) {
+      console.error('Error fetching subcategories:', error);
+    }
   };
 
   const handleAddBook = async () => {
@@ -82,6 +94,16 @@ const AddBook = ({ fetchBooks }) => {
     }
   };
 
+  const handleCategoryChange = async (e) => {
+    const categoryId = e.target.value;
+    setNewBook({ ...newBook, category: categoryId, subcategory: '' });
+    if (categoryId) {
+      await loadSubcategories(categoryId);
+    } else {
+      setSubcategories([]);
+    }
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <h3 className="text-md font-bold mb-4">Добавить книгу</h3>
@@ -100,7 +122,7 @@ const AddBook = ({ fetchBooks }) => {
           <input type="text" placeholder="Описание" value={newBook.description} onChange={(e) => setNewBook({ ...newBook, description: e.target.value })} className="border p-2 mb-2" />
           <input type="number" placeholder="Цена" value={newBook.price} onChange={(e) => setNewBook({ ...newBook, price: parseFloat(e.target.value) })} className="border p-2 mb-2" />
           <input type="number" placeholder="Количество" value={newBook.quantity} onChange={(e) => setNewBook({ ...newBook, quantity: parseInt(e.target.value) })} className="border p-2 mb-2" />
-          <select value={newBook.category} onChange={(e) => setNewBook({ ...newBook, category: e.target.value })} className="border p-2 mb-2">
+          <select value={newBook.category} onChange={handleCategoryChange} className="border p-2 mb-2">
             <option value="">Выберите категорию</option>
             {categories.map(category => (
               <option key={category._id} value={category._id}>{category.name}</option>

@@ -13,7 +13,6 @@ const Books = () => {
     const [editingBook, setEditingBook] = useState(null);
     const [subcategories, setSubcategories] = useState([]);
 
-
     useEffect(() => {
         fetchBooks();
         fetchAuthors();
@@ -51,6 +50,7 @@ const Books = () => {
     };
 
     const handleUpdateBook = async (bookId, updatedBook) => {
+        console.log(bookId);
         await axios.put(`http://localhost:5000/api/books/update/${bookId}`, updatedBook, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -66,34 +66,48 @@ const Books = () => {
     };
 
     const startEditingBook = (book) => {
-        setEditingBook({ ...book, author: book.author._id, category: book.category._id, subcategory: book.subcategory._id, publisher: book.publisher._id });
-        updateSubcategories(book.category._id); // Update subcategories when editing book
+        setEditingBook(book);
+        const categoryId = book.category._id; // Получаем идентификатор категории из книги
+        updateSubcategories(categoryId); // Обновляем подкатегории
     };
 
     const handleEditChange = (e) => {
         const { name, value } = e.target;
-        setEditingBook({ ...editingBook, [name]: value });
-        if (name === 'category') {
-            updateSubcategories(value);
-        }
+        setEditingBook(prevBook => {
+            const updatedBook = { ...prevBook, [name]: value };
+            if (name === 'category') {
+                const categoryId = value;
+                updateSubcategories(categoryId); // Обновляем подкатегории при изменении категории
+            }
+            return updatedBook;
+        });
     };
 
+    const updateSubcategories = async (categoryId) => {
+        if (!categoryId) return;
+        
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            const response = await axios.get(`http://localhost:5000/api/category/getSubcategoryArray/${categoryId}`, config);
+            setSubcategories(response.data);
+        } catch (error) {
+            console.error('Error fetching subcategories:', error);
+        }
+    }
+    const handleCategoryChange = (e) => {
+        const categoryId = e.target.value;
+        handleEditChange(e); // Обновлен вызов метода
+        if (categoryId) {
+            updateSubcategories(categoryId);
+        } else {
+            setSubcategories([]);
+        }
+    };
     const filteredBooks = books.filter(book =>
         book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         getAuthorName(book.author._id).toLowerCase().includes(searchTerm.toLowerCase())
     );
-    const updateSubcategories = async (categoryId) => {
-        const response = await axios.get(`http://localhost:5000/api/subcategory/getAll`);
-        const subcategoriesForCategory = response.data.filter(subcategory => subcategory.categoryId === categoryId);
-        setSubcategories(subcategoriesForCategory);
-    };
-
-    const handleCategoryChange = (e) => {
-        const categoryId = e.target.value;
-        handleEditChange(e); // Обновите другие поля, связанные с категорией
-        updateSubcategories(categoryId);
-    };
-
     return (
         <div className="container mx-auto p-4 text-sm">
             <h2 className="text-3xl font-semibold mb-6">Книги</h2>
@@ -197,7 +211,6 @@ const Books = () => {
                         </div>
                     </div>
                 )}
-
             </div>
         </div>
     );
