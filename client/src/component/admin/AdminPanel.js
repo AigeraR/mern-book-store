@@ -9,6 +9,8 @@ import Orders from './Orders';
 import Messages from './Messages';
 import Header from '../header/Header';
 import SidebarAdmin from './SidebarAdmin';
+import Authors from './Authors';
+import Publishers from './Publishers';
 
 const AdminPanel = () => {
   return (
@@ -26,6 +28,8 @@ const AdminPanel = () => {
                     <Route path="/categories" element={<Categories />} />
                     <Route path='/subcategories' element={<Subcategories />} />
                     <Route path="/books" element={<Books />} />
+                    <Route path ="/authors" element={<Authors/>} />
+                    <Route path='/publishers' element={<Publishers/>} />
                     <Route path="/messages" element={<Messages />} />
                 </Routes>
             </div>

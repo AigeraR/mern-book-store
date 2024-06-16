@@ -94,7 +94,7 @@ const AddBook = ({ fetchBooks }) => {
           <select value={newBook.author} onChange={(e) => setNewBook({ ...newBook, author: e.target.value })} className="border p-2 mb-2">
             <option value="">Выберите автора</option>
             {authors.map(author => (
-              <option key={author._id} value={author._id}>{author.name}</option>
+              <option key={author.name} value={author.name}>{author.name}</option>
             ))}
           </select>
           <input type="text" placeholder="Описание" value={newBook.description} onChange={(e) => setNewBook({ ...newBook, description: e.target.value })} className="border p-2 mb-2" />

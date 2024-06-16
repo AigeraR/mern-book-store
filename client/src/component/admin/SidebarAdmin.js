@@ -58,6 +58,8 @@ const SidebarAdmin = () => {
     { text: 'Подкатегории', to: "/admin/subcategories", icon: <AiOutlineUser className="inline-block mr-2" /> },
     { text: 'Книги', to: "/admin/books", icon: <AiOutlineUser className="inline-block mr-2" /> },
     { text: 'Сообщения', to: "/admin/messages", icon: <FcSms className="inline-block mr-2" /> },
+    {text: 'Авторы', to: "/admin/authors", icon: <AiOutlineUser className="inline-block mr-2" />},
+    {text: 'Издательства', to: "/admin/publishers", icon: <AiOutlineUser className="inline-block mr-2" />},
   ];
 
   return (

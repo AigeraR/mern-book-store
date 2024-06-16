@@ -10,6 +10,9 @@ const Books = () => {
     const [authors, setAuthors] = useState([]);
     const [categories, setCategories] = useState([]);
     const [publishers, setPublishers] = useState([]);
+    const [editingBook, setEditingBook] = useState(null);
+    const [subcategories, setSubcategories] = useState([]);
+
 
     useEffect(() => {
         fetchBooks();
@@ -34,11 +37,9 @@ const Books = () => {
     };
 
     const fetchPublishers = async () => {
-
         const response = await axios.get('http://localhost:5000/api/publisher/getAll');
         setPublishers(response.data);
-
-    }; console.log(publishers);
+    };
 
     const handleDeleteBook = async (bookId) => {
         await axios.delete(`http://localhost:5000/api/books/delete/${bookId}`, {
@@ -56,6 +57,7 @@ const Books = () => {
             }
         });
         fetchBooks();
+        setEditingBook(null); // Close the editing form after update
     };
 
     const getAuthorName = (authorId) => {
@@ -63,12 +65,34 @@ const Books = () => {
         return author ? author.name : 'Unknown';
     };
 
+    const startEditingBook = (book) => {
+        setEditingBook({ ...book, author: book.author._id, category: book.category._id, subcategory: book.subcategory._id, publisher: book.publisher._id });
+        updateSubcategories(book.category._id); // Update subcategories when editing book
+    };
 
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditingBook({ ...editingBook, [name]: value });
+        if (name === 'category') {
+            updateSubcategories(value);
+        }
+    };
 
     const filteredBooks = books.filter(book =>
         book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        getAuthorName(book.author).toLowerCase().includes(searchTerm.toLowerCase())
+        getAuthorName(book.author._id).toLowerCase().includes(searchTerm.toLowerCase())
     );
+    const updateSubcategories = async (categoryId) => {
+        const response = await axios.get(`http://localhost:5000/api/subcategory/getAll`);
+        const subcategoriesForCategory = response.data.filter(subcategory => subcategory.categoryId === categoryId);
+        setSubcategories(subcategoriesForCategory);
+    };
+
+    const handleCategoryChange = (e) => {
+        const categoryId = e.target.value;
+        handleEditChange(e); // Обновите другие поля, связанные с категорией
+        updateSubcategories(categoryId);
+    };
 
     return (
         <div className="container mx-auto p-4 text-sm">
@@ -77,12 +101,12 @@ const Books = () => {
 
             <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
                 <h3 className="text-xl font-bold mb-4">Управление книгами</h3>
-                <div className=" shadow-md mb-6">
+                <div className="shadow-md mb-6">
                     <h3 className="text-xl font-bold mb-4">Поиск</h3>
                     <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border p-2 mb-2" />
                 </div>
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead className=''>
+                    <thead>
                         <tr>
                             <th className="px-3 py-2 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">№</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Название</th>
@@ -101,7 +125,7 @@ const Books = () => {
                             <tr key={book._id}>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{index + 1}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.title}</td>
-                                <td className="px-3 py-2 whitespace-wrap text-xs">{getAuthorName(book.author.name)}</td>
+                                <td className="px-3 py-2 whitespace-wrap text-xs">{book.author.name}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.description}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.price} сом</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.quantity}</td>
@@ -114,12 +138,66 @@ const Books = () => {
                                 <td className="px-3 py-2 whitespace-wrap text-sm">{book.publisher.name}</td>
                                 <td className="px-2 py-2 whitespace-wrap text-sm justify-center space-x-2">
                                     <button onClick={() => handleDeleteBook(book._id)} className="bg-red-500 text-white p-1.5 rounded-lg"><RiDeleteBin6Line className='h-4 w-4' /></button>
-                                    <button onClick={() => handleUpdateBook(book._id, book)} className="bg-green-500 text-white p-1.5 rounded-lg mr-2"><FaEdit className='h-4 w-4' /></button>
+                                    <button onClick={() => startEditingBook(book)} className="bg-green-500 text-white p-1.5 rounded-lg mr-2"><FaEdit className='h-4 w-4' /></button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                {editingBook && (
+                    <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
+                        <h3 className="text-xl font-bold mb-4">Редактирование книги</h3>
+                        <div>
+                            <input type="text" name="title" placeholder="Название" value={editingBook.title} onChange={handleEditChange} className="border p-2 mb-2" />
+                            <input type="text" name="description" placeholder="Описание" value={editingBook.description} onChange={handleEditChange} className="border p-2 mb-2" />
+                            <input type="number" name="price" placeholder="Цена" value={editingBook.price} onChange={handleEditChange} className="border p-2 mb-2" />
+                            <input type="number" name="quantity" placeholder="Количество" value={editingBook.quantity} onChange={handleEditChange} className="border p-2 mb-2" />
+                            <input type="text" name="image" placeholder="Изображение" value={editingBook.image} onChange={handleEditChange} className="border p-2 mb-2" />
+                            <input type="text" name="published_date" placeholder="Дата публикации" value={editingBook.published_date} onChange={handleEditChange} className="border p-2 mb-2" />
+                            <div>
+                                <input type="checkbox" name="isBestseller" checked={editingBook.isBestseller} onChange={(e) => handleEditChange({ target: { name: 'isBestseller', value: e.target.checked } })} />
+                                <label>Бестселлер</label>
+                            </div>
+                            <select name="author" value={editingBook.author} onChange={handleEditChange} className="border p-2 mb-2">
+                                <option value="">Выберите автора</option>
+                                {authors.map(author => (
+                                    <option key={author._id} value={author._id}>{author.name}</option>
+                                ))}
+                            </select>
+                            <select
+                                name="category"
+                                value={editingBook.category}
+                                onChange={handleCategoryChange}
+                                className="border p-2 mb-2"
+                            >
+                                <option value="">Выберите категорию</option>
+                                {categories.map(category => (
+                                    <option key={category._id} value={category._id}>{category.name}</option>
+                                ))}
+                            </select>
+
+                            <select
+                                name="subcategory"
+                                value={editingBook.subcategory}
+                                onChange={handleEditChange}
+                                className="border p-2 mb-2"
+                            >
+                                <option value="">Выберите подкатегорию</option>
+                                {subcategories.map(subcategory => (
+                                    <option key={subcategory._id} value={subcategory._id}>{subcategory.name}</option>
+                                ))}
+                            </select>
+                            <select name="publisher" value={editingBook.publisher} onChange={handleEditChange} className="border p-2 mb-2">
+                                <option value="">Выберите издателя</option>
+                                {publishers.map(publisher => (
+                                    <option key={publisher._id} value={publisher._id}>{publisher.name}</option>
+                                ))}
+                            </select>
+                            <button onClick={() => handleUpdateBook(editingBook._id, editingBook)} className="bg-blue-500 text-white p-2 rounded-lg mt-4">Сохранить</button>
+                        </div>
+                    </div>
+                )}
+
             </div>
         </div>
     );

@@ -12,8 +12,8 @@ exports.getAllCategories = async (req, res) => {
 };
 
 exports.createCategory = async (req, res) => {
-    const { name, description, image } = req.body;
-    const newCategory = new Category({ name, description, image });
+    const { name, description, image,subcategories } = req.body;
+    const newCategory = new Category({ name, description, image,subcategories });
 
     try {
         const savedCategory = await newCategory.save();

@@ -15,7 +15,7 @@ function BestSeller() {
 
                 // Fetch all authors
                 const authorRequests = booksData.map(book =>
-                    axios.get(`http://localhost:5000/api/author/getAuthorById/${book.author.name}`)
+                    axios.get(`http://localhost:5000/api/author/getAuthorById/${book.author._id}`)
                 );
 
                 const authorsResponse = await Promise.all(authorRequests);
