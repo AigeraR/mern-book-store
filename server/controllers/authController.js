@@ -75,7 +75,7 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-exports.getUser = async (req, res) => {
+exports.getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
@@ -120,22 +120,16 @@ exports.logoutUser = (req, res) => {
     res.status(200).json({ message: 'Logged out successfully' });
 }
 
-//udate user
-exports.updateUser = async (req, res) => {
-    const { name, email, phone, address } = req.body;
-
+//udate user by id
+exports.updateUserById = async (req, res) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(
-            req.user.id,
-            { name, email, phone, address },
-            { new: true }
-        );
-
-        res.status(200).json(updatedUser);
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
+
+}
 
 // Обновление пароля пользователя
 exports.updatePassword = async (req, res) => {
@@ -195,3 +189,15 @@ exports.getUserAddresses = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+//delete user by id
+exports.deleteUserById = async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

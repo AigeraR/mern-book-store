@@ -5,6 +5,16 @@ import { FaRegAddressCard } from "react-icons/fa";
 import { MdBorderColor } from "react-icons/md";
 import { CiBookmark } from "react-icons/ci";
 import { FcSms } from "react-icons/fc";
+import { GiBuyCard } from "react-icons/gi";
+import { BiCategory } from "react-icons/bi";
+import { MdCategory } from "react-icons/md";
+import { FaBook } from "react-icons/fa";
+import { FaPersonBooth } from "react-icons/fa";
+import { ImOffice } from "react-icons/im";
+import { HiUsers } from "react-icons/hi";
+
+
+
 
 const SidebarAdmin = () => {
   const [avatar, setAvatar] = useState(localStorage.getItem('avatar') || '');
@@ -51,15 +61,16 @@ const SidebarAdmin = () => {
 
   const navLinkStyle = ({ isActive }) => isActive ? 'block py-2 px-4 bg-gray-200  rounded-md' : 'block py-2 px-4   rounded-md';
   const navLinks = [
-    { text: 'Панель', to: "/admin", icon: <AiOutlineUser className="inline-block mr-2" /> },
-    { text: 'Пользователь', to: "/admin/users", icon: <FaRegAddressCard className="inline-block mr-2" /> },
-    { text: 'Заказы', to: "/admin/orders", icon: <MdBorderColor className="inline-block mr-2" /> },
-    { text: 'Категории', to: "/admin/categories", icon: <CiBookmark className="inline-block mr-2" /> },
-    { text: 'Подкатегории', to: "/admin/subcategories", icon: <AiOutlineUser className="inline-block mr-2" /> },
-    { text: 'Книги', to: "/admin/books", icon: <AiOutlineUser className="inline-block mr-2" /> },
+    { text: 'Панель', to: "/admin", icon: <AiOutlineUser className="inline-block mr-2 bg-blue-500 text-white p-2 rounded-full" /> },
+    { text: 'Пользователь', to: "/admin/users", icon: <HiUsers className="inline-block mr-2 text-green-500" /> },
+    { text: 'Заказы', to: "/admin/orders", icon: <GiBuyCard className="inline-block mr-2 text-purple-600" /> },
+    { text: 'Категории', to: "/admin/categories", icon: <BiCategory className="inline-block mr-2 text-orange-700" /> },
+    { text: 'Подкатегории', to: "/admin/subcategories", icon: <MdCategory className="inline-block mr-2 text-green-500" /> },
+    { text: 'Книги', to: "/admin/books", icon: <FaBook className="inline-block mr-2 text-red-900" /> },
+    {text: 'Авторы', to: "/admin/authors", icon: <FaPersonBooth className="inline-block mr-2 text-yellow-400" />},
+    {text: 'Издательства', to: "/admin/publishers", icon: <ImOffice className="inline-block mr-2  text-pink-700" />},
     { text: 'Сообщения', to: "/admin/messages", icon: <FcSms className="inline-block mr-2" /> },
-    {text: 'Авторы', to: "/admin/authors", icon: <AiOutlineUser className="inline-block mr-2" />},
-    {text: 'Издательства', to: "/admin/publishers", icon: <AiOutlineUser className="inline-block mr-2" />},
+
   ];
 
   return (

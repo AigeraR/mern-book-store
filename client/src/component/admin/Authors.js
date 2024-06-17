@@ -85,7 +85,7 @@ const Authors = () => {
                     placeholder="Поиск..."
                     value={searchTerm}
                     onChange={handleSearch}
-                    className="border p-2 mb-2 rounded-sm"
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"  
                 />
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">

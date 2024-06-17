@@ -1,6 +1,4 @@
-// server/controllers/publisherController.js
 const Publisher = require('../models/Publisher');
-
 
 exports.getAllPublishers = async (req, res) => {
     try {
@@ -12,8 +10,8 @@ exports.getAllPublishers = async (req, res) => {
 };
 
 exports.createPublisher = async (req, res) => {
-    const { name, address, phone } = req.body;
-    const newPublisher = new Publisher({ name, address, phone });
+    const { name, logoUrl } = req.body;
+    const newPublisher = new Publisher({ name, logoUrl });
 
     try {
         const savedPublisher = await newPublisher.save();
@@ -23,7 +21,6 @@ exports.createPublisher = async (req, res) => {
     }
 };
 
-//get publisher by ID
 exports.getPublisherById = async (req, res) => {
     try {
         const publisher = await Publisher.findById(req.params.id);
@@ -31,5 +28,23 @@ exports.getPublisherById = async (req, res) => {
         res.status(200).json(publisher);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+exports.updatePublisher = async (req, res) => {
+    try {
+        const updatedPublisher = await Publisher.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json(updatedPublisher);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+exports.deletePublisher = async (req, res) => {
+    try {
+        await Publisher.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: 'Publisher deleted' });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
 };

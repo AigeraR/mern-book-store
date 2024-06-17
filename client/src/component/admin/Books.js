@@ -18,6 +18,7 @@ const Books = () => {
         fetchAuthors();
         fetchCategories();
         fetchPublishers();
+        
     }, []);
 
     const fetchBooks = async () => {
@@ -38,6 +39,7 @@ const Books = () => {
     const fetchPublishers = async () => {
         const response = await axios.get('http://localhost:5000/api/publisher/getAll');
         setPublishers(response.data);
+        // console.log(response.data);
     };
 
     const handleDeleteBook = async (bookId) => {
@@ -64,6 +66,11 @@ const Books = () => {
         const author = authors.find(author => author._id === authorId);
         return author ? author.name : 'Unknown';
     };
+    const getPublisherName = (publisherId) => {
+        const publisher = publishers.find(publisher => publisher._id === publisherId);
+        return publisher ? publisher.name : 'Unknown';
+    };
+
 
     const startEditingBook = (book) => {
         setEditingBook(book);
@@ -82,7 +89,7 @@ const Books = () => {
             return updatedBook;
         });
     };
-
+   
     const updateSubcategories = async (categoryId) => {
         if (!categoryId) return;
         
@@ -113,23 +120,25 @@ const Books = () => {
             <h2 className="text-3xl font-semibold mb-6">Книги</h2>
             <AddBook fetchBooks={fetchBooks} /> {/* Use the AddBook component */}
 
-            <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+            <div className="bg-white p-6 rounded-lg  overflow-x-auto">
                 <h3 className="text-xl font-bold mb-4">Управление книгами</h3>
-                <div className="shadow-md mb-6">
-                    <h3 className="text-xl font-bold mb-4">Поиск</h3>
-                    <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border p-2 mb-2" />
+                <div className=" mb-6">
+                    <h3 className="text-md font-bold mb-4">Поиск</h3>
+                    <input type="text" className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"  placeholder="поиск автора и названия..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}  />
                 </div>
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
-                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">№</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">№</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Название</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Автор</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Описание</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Цена</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Количество</th>
+                            <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Количество</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Бестселлер</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Изображение</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Категория</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Подкатегория</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Издатель</th>
                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
                         </tr>
@@ -142,14 +151,16 @@ const Books = () => {
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.author.name}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.description}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.price} сом</td>
-                                <td className="px-3 py-2 whitespace-wrap text-xs">{book.quantity}</td>
+                                <td className="px-2 py-2 whitespace-wrap text-xs">{book.quantity}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">
                                     <input type="checkbox" checked={book.isBestseller} onChange={(e) => handleUpdateBook(book._id, { ...book, isBestseller: e.target.checked })} />
                                 </td>
                                 <td className="px-3 py-2 whitespace-wrap text-sm">
                                     <img src={book.image} alt={book.title} className="w-16 h-16 object-cover" />
                                 </td>
-                                <td className="px-3 py-2 whitespace-wrap text-sm">{book.publisher.name}</td>
+                                <td className="px-3 py-2 whitespace-wrap text-xs">{book.category.name}</td>
+                                <td className='px-3 py-2 whitespace-wrap text-xs'>{book.subcategory.name}</td>
+                                <td className="px-3 py-2 whitespace-wrap text-sm">{(book.publisher && book.publisher.name)}</td>
                                 <td className="px-2 py-2 whitespace-wrap text-sm justify-center space-x-2">
                                     <button onClick={() => handleDeleteBook(book._id)} className="bg-red-500 text-white p-1.5 rounded-lg"><RiDeleteBin6Line className='h-4 w-4' /></button>
                                     <button onClick={() => startEditingBook(book)} className="bg-green-500 text-white p-1.5 rounded-lg mr-2"><FaEdit className='h-4 w-4' /></button>
