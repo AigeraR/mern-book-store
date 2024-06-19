@@ -154,10 +154,69 @@ exports.getBooksBySubcategory = async (req, res) => {
     }
 };
 
-// Get books by publisher
-exports.getBooksByPublisher = async (req, res) => {
+// // Get books by publisher
+// exports.getBooksByPublisher = async (req, res) => {
+//     try {
+//         const books = await Book.find({ publisher: req.params.publisher }).populate('author').populate('category').populate('subcategory').populate('publisher');
+//         res.json(books);
+//     } catch (err) {
+//         res.status(500).json({ message: err.message });
+//     }
+// };
+
+exports.getBooksByCategoryId = async (req, res) => {
     try {
-        const books = await Book.find({ publisher: req.params.publisher }).populate('author').populate('category').populate('subcategory').populate('publisher');
+        const books = await Book.find({ category: req.params.categoryId }).populate('author').populate('category').populate('subcategory').populate('publisher');
+        res.json(books);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+exports.getBooksBySubcategoryId = async (req, res) => {
+    try {
+        const books = await Book.find({ subcategory: req.params.subcategoryId }).populate('author').populate('category').populate('subcategory').populate('publisher');
+        res.json(books);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+exports.getBooksByAuthor = async (req, res) => {
+    const authorName = req.params.authorName;
+    try {
+      const books = await Book.find({ 'author.name': { $regex: new RegExp(authorName, 'i') } });
+      res.json(books);
+    } catch (error) {
+      res.status(500).json({ message: 'Server Error' });
+    }
+  };
+  
+  // Получение книг по частичному совпадению названия
+  exports.searchBooksByName = async (req, res) => {
+    const name = req.params.name;
+    try {
+      const books = await Book.find({ title: { $regex: new RegExp(name, 'i') } });
+      res.json(books);
+    } catch (error) {
+      res.status(500).json({ message: 'Server Error' });
+    }
+  };
+  
+  // Получение книг по издательству
+  exports.getBooksByPublisher = async (req, res) => {
+    const publisherName = req.params.publisherName;
+    try {
+      const books = await Book.find({ publisher: { $regex: new RegExp(publisherName, 'i') } });
+      res.json(books);
+    } catch (error) {
+      res.status(500).json({ message: 'Server Error' });
+    }
+  };
+
+// Get similar books by book id
+exports.getSimilarBooks = async (req, res) => {
+    try {
+        const books = await Book.find({ _id: { $ne: req.params.id } }).limit(4).populate('author').populate('category').populate('subcategory').populate('publisher');
         res.json(books);
     } catch (err) {
         res.status(500).json({ message: err.message });

@@ -11,6 +11,14 @@ module.exports = {
       colors: {
         'main-color': '#52D82B',
         'text-color': '#3D70B2',
+        orange: {
+          500: '#FF6F00',
+          600: '#FF6F00',
+        },
+        green: {
+          500: '#4CAF50',
+          600: '#388E3C',
+        },
       },
       
     },

@@ -15,5 +15,7 @@ router.put('/update/:id', protect, admin, subcategoryController.updateSubcategor
 
 //delete
 router.delete('/delete/:id', protect, admin, subcategoryController.deleteSubcategory);
+router.get('/getById/:id', subcategoryController.getSubcategoryById);
+
 
 module.exports = router;

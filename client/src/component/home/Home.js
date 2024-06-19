@@ -7,6 +7,7 @@ import BestSeller from './BestSeller';
 import Authors from './Authors';
 import Publishers from './Publishers';
 import Books from './Books';
+import Footer from '../footer/Footer';
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
       <Authors />
       <Publishers />
       <Books />
+      <Footer/>
       {/* <Authors/> */}
     </div>
   );

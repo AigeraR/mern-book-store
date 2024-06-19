@@ -23,13 +23,21 @@ router.delete('/deleteAll',protect, admin, bookController.deleteAllBooks);
 router.get('/getBookById/:id', bookController.getBookById);
 
 //Get by category
-router.get('/category/:category', bookController.getBooksByCategory);
-
+router.get('/category/:categoryId', bookController.getBooksByCategoryId);
+router.get('/subcategory/:subcategoryId', bookController.getBooksBySubcategoryId);
 //best seller
 router.get('/bestsellers', bookController.getBestsellerBooks);
 
 // Get books by publisher
 router.get('/publisher/:publisherName', bookController.getBooksByPublisher);
 
+// Get similar books 
+router.get('/similar/:id', bookController.getSimilarBooks);
+
+// Get books by author
+router.get('/author/:authorName', bookController.getBooksByAuthor);
+
+// Search books by name (partial match)
+router.get('/searchByName/:name', bookController.searchBooksByName);
 
 module.exports = router;

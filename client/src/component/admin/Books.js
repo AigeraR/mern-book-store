@@ -12,6 +12,7 @@ const Books = () => {
     const [publishers, setPublishers] = useState([]);
     const [editingBook, setEditingBook] = useState(null);
     const [subcategories, setSubcategories] = useState([]);
+    const [expandedBookId, setExpandedBookId] = useState(null);
 
     useEffect(() => {
         fetchBooks();
@@ -39,7 +40,6 @@ const Books = () => {
     const fetchPublishers = async () => {
         const response = await axios.get('http://localhost:5000/api/publisher/getAll');
         setPublishers(response.data);
-        // console.log(response.data);
     };
 
     const handleDeleteBook = async (bookId) => {
@@ -52,7 +52,6 @@ const Books = () => {
     };
 
     const handleUpdateBook = async (bookId, updatedBook) => {
-        console.log(bookId);
         await axios.put(`http://localhost:5000/api/books/update/${bookId}`, updatedBook, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -70,7 +69,6 @@ const Books = () => {
         const publisher = publishers.find(publisher => publisher._id === publisherId);
         return publisher ? publisher.name : 'Unknown';
     };
-
 
     const startEditingBook = (book) => {
         setEditingBook(book);
@@ -101,7 +99,8 @@ const Books = () => {
         } catch (error) {
             console.error('Error fetching subcategories:', error);
         }
-    }
+    };
+
     const handleCategoryChange = (e) => {
         const categoryId = e.target.value;
         handleEditChange(e); // Обновлен вызов метода
@@ -111,20 +110,32 @@ const Books = () => {
             setSubcategories([]);
         }
     };
+
+    const handleToggleDescription = (bookId) => {
+        setExpandedBookId(prevId => prevId === bookId ? null : bookId);
+    };
+
     const filteredBooks = books.filter(book =>
         book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         getAuthorName(book.author._id).toLowerCase().includes(searchTerm.toLowerCase())
     );
+
     return (
         <div className="container mx-auto p-4 text-sm">
             <h2 className="text-3xl font-semibold mb-6">Книги</h2>
             <AddBook fetchBooks={fetchBooks} /> {/* Use the AddBook component */}
 
-            <div className="bg-white p-6 rounded-lg  overflow-x-auto">
+            <div className="bg-white p-6 rounded-lg overflow-x-auto">
                 <h3 className="text-xl font-bold mb-4">Управление книгами</h3>
-                <div className=" mb-6">
+                <div className="mb-6">
                     <h3 className="text-md font-bold mb-4">Поиск</h3>
-                    <input type="text" className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"  placeholder="поиск автора и названия..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}  />
+                    <input
+                        type="text"
+                        className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"
+                        placeholder="поиск автора и названия..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead>
@@ -148,12 +159,23 @@ const Books = () => {
                             <tr key={book._id}>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{index + 1}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.title}</td>
-                                <td className="px-3 py-2 whitespace-wrap text-xs">{book.author.name}</td>
-                                <td className="px-3 py-2 whitespace-wrap text-xs">{book.description}</td>
+                                <td className="px-3 py-2 whitespace-wrap text-xs">{(book.author.name ? book.author.name : '')}</td>
+                                <td className="px-3 py-2 whitespace-wrap text-xs">
+                                    {expandedBookId === book._id
+                                        ? book.description
+                                        : `${book.description.substring(0, 20)}... `}
+                                    <button onClick={() => handleToggleDescription(book._id)}>
+                                        {expandedBookId === book._id ? 'Скрыть' : 'Подробнее'}
+                                    </button>
+                                </td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.price} сом</td>
                                 <td className="px-2 py-2 whitespace-wrap text-xs">{book.quantity}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">
-                                    <input type="checkbox" checked={book.isBestseller} onChange={(e) => handleUpdateBook(book._id, { ...book, isBestseller: e.target.checked })} />
+                                    <input
+                                        type="checkbox"
+                                        checked={book.isBestseller}
+                                        onChange={(e) => handleUpdateBook(book._id, { ...book, isBestseller: e.target.checked })}
+                                    />
                                 </td>
                                 <td className="px-3 py-2 whitespace-wrap text-sm">
                                     <img src={book.image} alt={book.title} className="w-16 h-16 object-cover" />
@@ -162,8 +184,12 @@ const Books = () => {
                                 <td className='px-3 py-2 whitespace-wrap text-xs'>{book.subcategory.name}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-sm">{(book.publisher && book.publisher.name)}</td>
                                 <td className="px-2 py-2 whitespace-wrap text-sm justify-center space-x-2">
-                                    <button onClick={() => handleDeleteBook(book._id)} className="bg-red-500 text-white p-1.5 rounded-lg"><RiDeleteBin6Line className='h-4 w-4' /></button>
-                                    <button onClick={() => startEditingBook(book)} className="bg-green-500 text-white p-1.5 rounded-lg mr-2"><FaEdit className='h-4 w-4' /></button>
+                                    <button onClick={() => handleDeleteBook(book._id)} className="bg-red-500 text-white p-1.5 rounded-lg">
+                                        <RiDeleteBin6Line className='h-4 w-4' />
+                                    </button>
+                                    <button onClick={() => startEditingBook(book)} className="bg-green-500 text-white p-1.5 rounded-lg mr-2">
+                                        <FaEdit className='h-4 w-4' />
+                                    </button>
                                 </td>
                             </tr>
                         ))}

@@ -46,6 +46,7 @@ function BestSeller() {
             <h1 className="text-sm font-bold p-9 sm:text-sm md:text-md xl:text-xl lg:text-lg italic">Книжные бестселлеры</h1>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {books.map((book) => (
+                    <Link to={`/book/${book._id}`} key={book._id}>
                     <div key={book._id} className="relative border p-4 rounded-lg flex flex-col">
                         <div className="w-full h-48 sm:h-40 md:h-48 lg:h-56 xl:h-64 flex items-center justify-center overflow-hidden">
                             <img src={book.image} alt={book.title} className="max-h-full max-w-full object-contain" />
@@ -58,6 +59,7 @@ function BestSeller() {
                             <p className='p-1 text-center text-white font-open-sans'>бестселлер</p>
                         </div>
                     </div>
+                    </Link>
                 ))}
             </div>
         </div>

@@ -11,7 +11,7 @@ const Navigation = () => {
     ];
 
     return ( 
-        <div className="p-2">
+        <div className="p-2 ">
             <div className="">
                 <div className='flex font-open-sans text-md  text-gray-700 '>
                     {categorys.map((category) => (

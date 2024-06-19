@@ -44,3 +44,11 @@ exports.updateSubcategory = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+exports.getSubcategoryById = async (req, res) => {
+    try {
+        const subcategory = await Subcategory.findById(req.params.id).populate('category');
+        res.json(subcategory);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
