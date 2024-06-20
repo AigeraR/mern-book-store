@@ -24,6 +24,8 @@ const authorsRoute = require('./routes/author');
 const publisherRoute = require('./routes/publisher');
 const categoryRoute = require('./routes/category');
 const subcategoryRoute = require('./routes/subcategory');
+const orderRoute = require('./routes/order');
+const cartRoute = require('./routes/cart');
 
 
 // Route Middlewares
@@ -33,6 +35,9 @@ app.use('/api/author', authorsRoute);
 app.use('/api/publisher', publisherRoute);
 app.use('/api/category', categoryRoute);
 app.use('/api/subcategory', subcategoryRoute);
+app.use('/api/order', orderRoute);
+app.use('/api/cart', cartRoute);
+
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

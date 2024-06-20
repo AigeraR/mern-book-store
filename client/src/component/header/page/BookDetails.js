@@ -3,12 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import SimilarBooks from './SimilarBooks'; // Импорт компонента SimilarBooks
 import Header from '../Header';
+import Cart from '../Cart';
 
 const BookDetails = () => {
     const { bookId } = useParams();
     const [book, setBook] = useState(null);
     const [similarBooks, setSimilarBooks] = useState([]);
-
+    const [addedToCart, setAddedToCart] = useState(false);
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
@@ -23,6 +24,35 @@ const BookDetails = () => {
 
         fetchBookDetails();
     }, [bookId]);
+    const addToCartHandler = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            const response = await axios.post(`http://localhost:5000/api/cart/addToCart/${bookId}`, {}, config);
+
+            const cartItems = response.data.cart.items;
+            const existingCartItem = cartItems.find(item => item.book.toString() === bookId);
+
+            if (existingCartItem) {
+                // Update the quantity of the existing item
+                existingCartItem.quantity++;
+                await axios.put(`http://localhost:5000/api/cart/updateCartItem/${existingCartItem._id}`, { quantity: existingCartItem.quantity }, config);
+            } else {
+                // Create a new cart item
+                const newCartItem = {
+                    book: bookId,
+                    quantity: 1
+                };
+                await axios.post(`http://localhost:5000/api/cart/addCartItem`, newCartItem, config);
+            }
+
+            setAddedToCart(true);
+            alert('Товар добавлен в корзину');
+        } catch (error) {
+            console.error('Error adding book to cart:', error);
+            alert('Произошла ошибка при добавлении товара в корзину');
+        }
+    };
 
     if (!book) {
         return <div>Loading...</div>;
@@ -71,7 +101,10 @@ const BookDetails = () => {
                         )}
                         <div className="text-2xl font-bold text-gray-800">{book.price} сом</div>
                         {book.quantity > 0 ? (
-                            <button className="w-full py-2 px-4 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition duration-200">
+                            <button
+                                className="w-full py-2 px-4 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition duration-200"
+                                onClick={addToCartHandler}
+                            >
                                 Добавить в корзину
                             </button>
                         ) : (

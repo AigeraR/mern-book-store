@@ -39,7 +39,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
-    }
+    },
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }] ,
+    cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cart' }],
+
 });
 
 // Hash the password before saving the user

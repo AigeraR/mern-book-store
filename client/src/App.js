@@ -51,7 +51,7 @@ const App = () => {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/book/:bookId" element={<BookDetails />} />
-          {/* <Route path="/card" element={<Cart />} /> */}
+          <Route path="/cart" element={<Cart />} />
           <Route
             path="/account/*"
             element={<PrivateRoute element={<AccountPage />} requiredRole="user" />}
