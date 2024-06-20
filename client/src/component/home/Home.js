@@ -14,11 +14,18 @@ const Home = () => {
     <div>
       <Header />
       <Banner />
-      <BestSeller />
-      <Authors />
-      <Publishers />
-      <Books />
-      <Footer/>
+      <div className='pr-2 pl-2'>
+        <BestSeller />
+        <Authors />
+        <Publishers />
+        <div>
+          <h1 className="text-md font-bold p-5 sm:text-sm md:text-md xl:text-xl lg:text-lg italic">Книги</h1>
+          <Books />
+        </div>
+      </div>
+
+
+      <Footer />
       {/* <Authors/> */}
     </div>
   );

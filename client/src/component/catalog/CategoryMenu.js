@@ -4,12 +4,12 @@ import axios from 'axios';
 import PriceSlider from './PriceSlider';
 import { MdKeyboardArrowLeft } from "react-icons/md";
 
-
-const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selectedPublishers, setSelectedPublishers, priceRange, setPriceRange  }) => {
+const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selectedPublishers, setSelectedPublishers, priceRange, setPriceRange }) => {
     const [activeCategory, setActiveCategory] = useState(null);
     const [authors, setAuthors] = useState([]);
     const [publishers, setPublishers] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [authorSearchQuery, setAuthorSearchQuery] = useState('');
+    const [publisherSearchQuery, setPublisherSearchQuery] = useState('');
 
     useEffect(() => {
         fetchAuthors();
@@ -52,15 +52,19 @@ const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selecte
         setSelectedPublishers(updatedSelectedPublishers);
     };
 
-    const handleSearchInputChange = (e) => {
-        setSearchQuery(e.target.value);
+    const handleAuthorSearchInputChange = (e) => {
+        setAuthorSearchQuery(e.target.value);
+    };
+
+    const handlePublisherSearchInputChange = (e) => {
+        setPublisherSearchQuery(e.target.value);
     };
 
     return (
         <div className="w-full md:w-1/5 p-4 bg-white text-sm">
             <h2 className="text-lg font-semibold mb-2">
                 <Link to="/catalog" className="text-gray-500 flex hover:text-blue-700 items-center">
-                    <MdKeyboardArrowLeft className='mr-2 w-7 h-5'/> Все категории
+                    <MdKeyboardArrowLeft className='mr-2 w-7 h-5' /> Все категории
                 </Link>
             </h2>
             <ul>
@@ -80,7 +84,7 @@ const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selecte
                                             to={`/catalog/${category._id}/${subcategory._id}`}
                                             className=" hover:text-blue-500"
                                         >
-                                          <p className='text-sm py-1'> {subcategory.name}</p> 
+                                            <p className='text-sm py-1'> {subcategory.name}</p>
                                         </Link>
                                     </li>
                                 ))}
@@ -96,12 +100,13 @@ const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selecte
                     type="text"
                     placeholder="Поиск по авторам"
                     className="border border-gray-300 rounded px-3 py-2 w-full mb-2"
-                    value={searchQuery}
-                    onChange={handleSearchInputChange}
+                    value={authorSearchQuery}
+                    onChange={handleAuthorSearchInputChange}
                 />
                 {/* Чекбоксы авторов */}
                 {authors
-                    .filter(author => author.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .filter(author => author.name.toLowerCase().includes(authorSearchQuery.toLowerCase()))
+                    .slice(0, 10) // Ограничение до 10 авторов
                     .map(author => (
                         <div key={author._id} className="flex items-center text-sm mb-1">
                             <input
@@ -115,6 +120,7 @@ const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selecte
                             <label htmlFor={author._id} className="">{author.name}</label>
                         </div>
                     ))}
+
             </div>
             <div className="mt-6">
                 <h2 className="text-lg font-semibold mb-2">Издательства</h2>
@@ -122,12 +128,12 @@ const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selecte
                     type="text"
                     placeholder="Поиск по Издательствам"
                     className="border border-gray-300 rounded px-3 py-2 w-full mb-2"
-                    value={searchQuery}
-                    onChange={handleSearchInputChange}
+                    value={publisherSearchQuery}
+                    onChange={handlePublisherSearchInputChange}
                 />
                 {/* Чекбоксы Издательств */}
                 {publishers
-                    .filter(publisher => publisher.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .filter(publisher => publisher.name.toLowerCase().includes(publisherSearchQuery.toLowerCase()))
                     .map(publisher => (
                         <div key={publisher._id} className="flex items-center text-sm mb-1">
                             <input

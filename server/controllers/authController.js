@@ -58,7 +58,7 @@ exports.loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id, role: user.role }, secretKey, {
-            expiresIn: '1h'
+            expiresIn: '3h'
         });
 
         res.json({
@@ -75,7 +75,7 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-exports.getUserById = async (req, res) => {
+exports.getUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
@@ -85,7 +85,7 @@ exports.getUserById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
 
 //get all users
 exports.getAllUsers = async (req, res) => {
@@ -121,7 +121,7 @@ exports.logoutUser = (req, res) => {
 }
 
 //udate user by id
-exports.updateUserById = async (req, res) => {
+exports.updateUser = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json(user);

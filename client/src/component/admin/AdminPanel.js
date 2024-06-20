@@ -24,7 +24,7 @@ const AdminPanel = () => {
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
-                    <Route path="/orders" element={<Orders />} />
+                    {/* <Route path="/orders" element={<Orders />} /> */}
                     <Route path="/categories" element={<Categories />} />
                     <Route path='/subcategories' element={<Subcategories />} />
                     <Route path="/books" element={<Books />} />

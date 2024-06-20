@@ -33,6 +33,7 @@ exports.createAuthor = async (req, res) => {
 // Get author by ID
 exports.getAuthorById = async (req, res) => {
     try {
+        
         const author = await Author.findById(req.params.id)
         if (!author) return res.status(404).json({ message: 'Author not found' });
         res.status(200).json(author);
@@ -70,10 +71,11 @@ exports.deleteAuthor = async (req, res) => {
 //get author by ID
  exports.getAuthorById = async (req, res) => {
     try {
-      const author = await Author.findById(req.params.id);
+      const author = await Author.findById(req.params.id).populate('books');
       if (!author) return res.status(404).json({ message: 'Author not found' });
       res.status(200).json(author);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   };
+ 

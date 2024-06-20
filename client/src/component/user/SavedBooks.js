@@ -11,7 +11,8 @@ const SavedBooks = () => {
 
     return (
         <div className="mt-4">
-            <h2 className="text-2xl font-bold mb-4">Сохраненные книги</h2>
+            <h2 className="text-md font-bold mb-4">Сохраненные книги</h2>
+            <p className='mt-12'>У вас нет сохраненных книг</p>
             <ul>
                 {books.map((book, index) => (
                     <li key={index} className="border-b py-2">

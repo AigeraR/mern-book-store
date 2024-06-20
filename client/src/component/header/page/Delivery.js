@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from '../Header';
 import Breadcrumbs from '../../Breadcrumbs';
+import Footer from '../../footer/Footer';
 
 const Delivery = () => {
     return (
@@ -45,6 +46,8 @@ const Delivery = () => {
                     </p>
                 </section>
             </div>
+            <Footer/>
+            
         </>
     );
 }

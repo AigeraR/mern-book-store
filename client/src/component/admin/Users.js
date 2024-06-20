@@ -56,7 +56,7 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.put(`http://localhost:5000/api/auth/updateUserById/${editingUser._id}`, editingUser, config);
+      const response = await axios.put(`http://localhost:5000/api/auth/updateUser/${editingUser._id}`, editingUser, config);
       setUsers(users.map((user) => (user._id === editingUser._id ? response.data : user)));
       setEditingUser(null);
     } catch (error) {

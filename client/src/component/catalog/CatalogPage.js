@@ -1,3 +1,4 @@
+// src/component/catalog/CatalogPage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CategoryMenu from './CategoryMenu';
@@ -5,13 +6,15 @@ import SortOptions from './SortOptions';
 import BookList from './BookList';
 import Header from '../header/Header';
 import Breadcrumbs from '../Breadcrumbs';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import Footer from '../footer/Footer';
 
 const CatalogPage = () => {
     const [categories, setCategories] = useState([]);
     const [books, setBooks] = useState([]);
     const { categoryId, subcategoryId } = useParams();
+    const location = useLocation();
     const [sortOption, setSortOption] = useState('default');
     const [selectedAuthors, setSelectedAuthors] = useState([]);
     const [selectedPublishers, setSelectedPublishers] = useState([]);
@@ -29,7 +32,9 @@ const CatalogPage = () => {
 
     useEffect(() => {
         let url = 'http://localhost:5000/api/books/allBook';
-        if (subcategoryId) {
+        if (location.pathname === '/catalog/bestseller') {
+            url = 'http://localhost:5000/api/books/bestsellers'; // Убедитесь, что ваш сервер имеет соответствующий маршрут
+        } else if (subcategoryId) {
             url = `http://localhost:5000/api/books/subcategory/${subcategoryId}`;
         } else if (categoryId) {
             url = `http://localhost:5000/api/books/category/${categoryId}`;
@@ -50,7 +55,7 @@ const CatalogPage = () => {
             .catch(error => {
                 console.error('Error fetching books:', error);
             });
-    }, [categoryId, subcategoryId, selectedAuthors, selectedPublishers, priceRange]);
+    }, [categoryId, subcategoryId, location.pathname, selectedAuthors, selectedPublishers, priceRange]);
 
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -73,6 +78,7 @@ const CatalogPage = () => {
                     <BookList books={books} sortOption={sortOption} />
                 </div>
             </div>
+            <Footer />
         </>
     );
 };

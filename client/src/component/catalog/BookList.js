@@ -23,7 +23,7 @@ const BookList = ({ books, selectedCategory, sortOption }) => {
     return (
         <div className="p-4">
             {/* <h1 className="text-2xl font-bold mb-4">{selectedCategory ? `Книги по категории: ${selectedCategory}` : 'Все книги'}</h1> */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
                 {sortedBooks.map((book) => (
                     <BookCard key={book._id} book={book} />
                 ))}

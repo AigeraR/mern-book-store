@@ -22,7 +22,7 @@ const AccountPage = () => {
                     <Routes>
                         <Route path="/" element={<MyAccount  />} />
                         <Route path="/addresses" element={<Addresses />} />
-                        <Route path="/orders" element={<Orders />} />
+                        {/* <Route path="/orders" element={<Orders />} /> */}
                         <Route path="/saved-books" element={<SavedBooks />} />
                         <Route path="/messages" element={<Messages />} />
                     </Routes>

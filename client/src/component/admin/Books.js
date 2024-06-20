@@ -19,6 +19,7 @@ const Books = () => {
         fetchAuthors();
         fetchCategories();
         fetchPublishers();
+       
         
     }, []);
 
@@ -52,14 +53,19 @@ const Books = () => {
     };
 
     const handleUpdateBook = async (bookId, updatedBook) => {
+        if (editingBook && editingBook.author && updatedBook.author && updatedBook.author._id !== editingBook.author._id) {
+            const newAuthor = await authors.find(author => author._id === updatedBook.author._id);
+            updatedBook = { ...updatedBook, author: newAuthor };
+        }
+    
         await axios.put(`http://localhost:5000/api/books/update/${bookId}`, updatedBook, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
         fetchBooks();
-        setEditingBook(null); // Close the editing form after update
-    };
+        setEditingBook(null); 
+    }; 
 
     const getAuthorName = (authorId) => {
         const author = authors.find(author => author._id === authorId);
@@ -75,7 +81,12 @@ const Books = () => {
         const categoryId = book.category._id; // Получаем идентификатор категории из книги
         updateSubcategories(categoryId); // Обновляем подкатегории
     };
-
+    //update books in author.books array when author is changed
+    const handleAuthorChange = (e) => {
+        const authorId = e.target.value;
+        const author = authors.find(author => author._id === authorId);
+        setEditingBook(prevBook => ({ ...prevBook, author }));
+    }
     const handleEditChange = (e) => {
         const { name, value } = e.target;
         setEditingBook(prevBook => {
@@ -83,6 +94,26 @@ const Books = () => {
             if (name === 'category') {
                 const categoryId = value;
                 updateSubcategories(categoryId); // Обновляем подкатегории при изменении категории
+            }
+            if (name === 'author') {
+                const authorId = value;
+                const author = authors.find(author => author._id === authorId);
+                updatedBook.author = author;
+            }
+            if (name === 'publisher') {
+                const publisherId = value;
+                const publisher = publishers.find(publisher => publisher._id === publisherId);
+                updatedBook.publisher = publisher;
+            }
+            if (name === 'subCategory') {
+                const subCategoryId = value;
+                const subCategory = subcategories.find(subCategory => subCategory._id === subCategoryId);
+                updatedBook.subCategory = subCategory;
+            }
+            if (name =='book') {
+                const bookId = value;
+                const book = authors.books.find(book => book._id === bookId);
+                updatedBook.book = book;
             }
             return updatedBook;
         });

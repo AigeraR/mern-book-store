@@ -126,10 +126,10 @@ const Publishers = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                         {filteredPublishers.map((publisher, index) => (
                             <tr key={publisher._id}>
-                                <td className="px-3 py-2 whitespace-wrap text-xs">{index + 1}</td>
-                                <td className="px-3 py-2 whitespace-wrap text-xs">{publisher.name}</td>
-                                <td className="px-3 py-2 whitespace-wrap text-sm">
-                                    <img src={publisher.logoUrl} alt={publisher.name} className="w-16 h-16 object-cover" />
+                                <td className="px-1 py-2 whitespace-wrap text-xs">{index + 1}</td>
+                                <td className="px-1 py-2 whitespace-wrap text-xs">{publisher.name}</td>
+                                <td className="px-1 py-2 whitespace-wrap text-sm">
+                                    <img src={publisher.logoUrl} alt={publisher.name} className="w-10 h-10 object-cover" />
                                 </td>
                                 <td className="px-2 py-2 whitespace-wrap text-sm justify-center space-x-2">
                                     <button onClick={() => handleDeletePublisher(publisher._id)} className="bg-red-500 text-white p-1.5 rounded-lg"><RiDeleteBin6Line className='h-4 w-4' /></button>

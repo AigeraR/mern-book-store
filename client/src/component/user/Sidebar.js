@@ -51,11 +51,11 @@ const Sidebar = () => {
 
   const navLinkStyle = ({ isActive }) => isActive ? 'block py-2 px-4 bg-gray-200  rounded-md' : 'block py-2 px-4   rounded-md';
   const navLinks = [
-    { text: 'Личный кабинет', to: "/account", icon: <AiOutlineUser className="inline-block mr-2" /> },
-    { text: 'Адреса', to: "/account/addresses", icon: <FaRegAddressCard className="inline-block mr-2" /> },
-    { text: 'Заказы', to: "/account/orders", icon: <MdBorderColor className="inline-block mr-2" /> },
-    { text: 'Сохраненные книги', to: "/account/saved-books", icon: <CiBookmark className="inline-block mr-2" /> },
-    { text: 'Сообщения', to: "/account/messages", icon: <FcSms className="inline-block mr-2" /> },
+    { text: 'Личный кабинет', to: "/account", icon: <AiOutlineUser className="inline-block mr-2 text-pink-800" /> },
+    { text: 'Адреса', to: "/account/addresses", icon: <FaRegAddressCard className="inline-block mr-2 text-green-600" /> },
+    // { text: 'Заказы', to: "/account/orders", icon: <MdBorderColor className="inline-block mr-2" /> },
+    { text: 'Сохраненные книги', to: "/account/saved-books", icon: <CiBookmark className="inline-block mr-2 text-orange-600" /> },
+    { text: 'Сообщения', to: "/account/messages", icon: <FcSms className="inline-block mr-2 " /> },
   ];
 
   return (

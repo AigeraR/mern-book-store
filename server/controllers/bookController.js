@@ -216,11 +216,20 @@ exports.getBooksByAuthor = async (req, res) => {
 // Get similar books by book id
 exports.getSimilarBooks = async (req, res) => {
     try {
-        const books = await Book.find({ _id: { $ne: req.params.id } }).limit(4).populate('author').populate('category').populate('subcategory').populate('publisher');
+        const books = await Book.find({ _id: { $ne: req.params.id } }).limit(10).populate('category').populate('subcategory');
         res.json(books);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
+exports.getBookByAuthorId = async (req, res) => {
+    try {
+        
+        const books = await Book.find({ author: req.params.authorId }).populate('author').populate('category').populate('subcategory').populate('publisher');
+        res.json(books);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 

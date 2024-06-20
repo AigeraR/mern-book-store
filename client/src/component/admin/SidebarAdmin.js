@@ -63,13 +63,13 @@ const SidebarAdmin = () => {
   const navLinks = [
     { text: 'Панель', to: "/admin", icon: <AiOutlineUser className="inline-block mr-2 bg-blue-500 text-white p-2 rounded-full" /> },
     { text: 'Пользователь', to: "/admin/users", icon: <HiUsers className="inline-block mr-2 text-green-500" /> },
-    { text: 'Заказы', to: "/admin/orders", icon: <GiBuyCard className="inline-block mr-2 text-purple-600" /> },
+    // { text: 'Заказы', to: "/admin/orders", icon: <GiBuyCard className="inline-block mr-2 text-purple-600" /> },
     { text: 'Категории', to: "/admin/categories", icon: <BiCategory className="inline-block mr-2 text-orange-700" /> },
     { text: 'Подкатегории', to: "/admin/subcategories", icon: <MdCategory className="inline-block mr-2 text-green-500" /> },
     { text: 'Книги', to: "/admin/books", icon: <FaBook className="inline-block mr-2 text-red-900" /> },
     {text: 'Авторы', to: "/admin/authors", icon: <FaPersonBooth className="inline-block mr-2 text-yellow-400" />},
     {text: 'Издательства', to: "/admin/publishers", icon: <ImOffice className="inline-block mr-2  text-pink-700" />},
-    { text: 'Сообщения', to: "/admin/messages", icon: <FcSms className="inline-block mr-2" /> },
+    // { text: 'Сообщения', to: "/admin/messages", icon: <FcSms className="inline-block mr-2" /> },
 
   ];
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../Header';
 import Breadcrumbs from '../../Breadcrumbs';
+import Footer from '../../footer/Footer';
 
 const WholeSale = () => {
   return (
@@ -53,6 +54,7 @@ const WholeSale = () => {
           </p>
         </section>
       </div>
+      <Footer/>
     </>
   );
 }

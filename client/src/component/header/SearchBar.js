@@ -43,11 +43,11 @@ const SearchBar = ({ className }) => {
 
   return (
     <div className={`relative ${className}`} ref={searchResultsRef}>
-      <div className="flex items-center border border-gray-300 bg-white shadow-md rounded-md lg:w-auto">
+      <div className="flex items-center border border-gray-300 bg-white  ml-4 xl:ml-0 lg:ml-0 md:ml-5  shadow-md rounded-md lg:w-auto">
         <input
           type="search"
           className="relative flex-grow bg-transparent outline-none text-gray-700 placeholder-gray-500 px-14 py-2 rounded-l-md border-none"
-          placeholder="Поиск книг, авторов..."
+          placeholder="Поиск книг..."
           aria-label="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

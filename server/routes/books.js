@@ -21,7 +21,7 @@ router.delete('/deleteAll',protect, admin, bookController.deleteAllBooks);
 
 // Get a single book
 router.get('/getBookById/:id', bookController.getBookById);
-
+router.get('/getBookByAuthorId/:id', bookController.getBookByAuthorId);
 //Get by category
 router.get('/category/:categoryId', bookController.getBooksByCategoryId);
 router.get('/subcategory/:subcategoryId', bookController.getBooksBySubcategoryId);

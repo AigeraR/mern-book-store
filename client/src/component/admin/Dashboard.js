@@ -42,7 +42,7 @@ const Dashboard = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-bold">Продажи</h3>
-          <p className="text-2xl">$5000</p>
+          <p className="text-2xl">50000 сом</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-bold">Книг</h3>
@@ -50,7 +50,7 @@ const Dashboard = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-bold">Заказы</h3>
-          <p className="text-2xl">150</p>
+          <p className="text-2xl">154</p>
         </div>
       </div>
     </div>

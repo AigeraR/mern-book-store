@@ -17,10 +17,10 @@ const Publishers = () => {
     return (
         <div className="container mx-auto py-8 p-3">
             <h2 className="text-xl font-bold mb-4 p-4 lg:text-md md:sm">Редакции и издательства</h2>
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-4 bg-gray-100 p-4">
+            <div className="grid grid-cols-2 md:grid-cols-7 gap-2 bg-gray-50 p-4">
                 {publishers.map(publisher => (
-                    <Link to={`/publisher/${transliterate(publisher.name)}`} key={publisher._id} className="flex justify-center items-center p-4 rounded-md hover:shadow-lg">
-                    <img src={publisher.logoUrl} alt={publisher.name} className="h-16 xl:h-24 lg:20 md:16 object-contain" />
+                    <Link to={`/publisher/${publisher._id}`} key={publisher._id} className="flex justify-center items-center p-4 rounded-md hover:shadow-lg">
+                    <img src={publisher.logoUrl} alt={publisher.name} className="h-16 xl:h-24 lg:h-20 md:h-16 object-contain" />
                 </Link>
                 ))}
             </div>

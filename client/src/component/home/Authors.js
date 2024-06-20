@@ -64,7 +64,7 @@ function AuthorCarousel({ authors }) {
     return (
         <Slider {...settings} className='relative px-4'>
             {authors.map((author) => (
-                <div key={author._id} className=''>
+                <div key={author._id} className='transition-transform duration-200 transform hover:scale-105'>
                     <Link to={`/author/${author._id}`}>
                         <img 
                             src={author.img} 

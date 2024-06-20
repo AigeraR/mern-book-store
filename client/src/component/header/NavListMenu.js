@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from 'react'
 import Logo from './Logo';
 import axios from 'axios';
-import { transliterate } from '../utils/transliterate';
 
 import {
   Dialog,
@@ -65,10 +64,10 @@ export default function Example({ userName, cartItemCount }) {
         sections: menu.map((category) => ({
           id: category._id,
           name: category.name,
-          href: `catalog/${(category._id)}`,
+          href: `/catalog/${category._id}`,
           items: category.subcategories.map((subcategory) => ({
             name: subcategory.name,
-            href: `catalog/${(category._id)}/${(subcategory._id)}`, // Update the href as needed
+            href: `/catalog/${category._id}/${subcategory._id}`,
           })),
         })),
       },
@@ -77,7 +76,7 @@ export default function Example({ userName, cartItemCount }) {
       { name: 'Company', href: '#' },
       { name: 'Stores', href: '#' },
     ],
-  };
+  }
 
   return (
     <div className='relative m-0'>
@@ -164,29 +163,6 @@ export default function Example({ userName, cartItemCount }) {
                       ))}
                     </TabPanels>
                   </TabGroup>
-
-                  <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                    {navigation.pages.map((page) => (
-                      <div key={page.name} className="flow-root">
-                        <a href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
-                          {page.name}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                    <div className="flow-root">
-                      <a href="/login" className="-m-2 block p-2 font-medium text-gray-900">
-                        Войти
-                      </a>
-                    </div>
-                    <div className="flow-root">
-                      <a href="/register" className="-m-2 block p-2 font-medium text-gray-900">
-                        Регистрация
-                      </a>
-                    </div>
-                  </div>
                 </DialogPanel>
               </TransitionChild>
             </div>
@@ -307,7 +283,7 @@ export default function Example({ userName, cartItemCount }) {
                     <Navigation />
                   </div>
                   <div className='ml-72 md:ml-0 lg:ml-52 text-sm'>
-                    <a href='/best-sellers' className='flex sm:inline-flex justify-center items-center bg-orange-500 hover:bg-green-600 active:bg-green-700 focus-visible:ring ring-green-300 text-white font-semibold text-center rounded-md outline-none transition duration-100 px-5 py-2'>Бестселлеры</a>
+                    <a href='catalog/bestseller' className='flex sm:inline-flex justify-center items-center bg-orange-500 hover:bg-green-600 active:bg-green-700 focus-visible:ring ring-green-300 text-white font-semibold text-center rounded-md outline-none transition duration-100 px-5 py-2'>Бестселлеры</a>
                   </div>
                 </div>
                 <div className="ml-auto flex items-center ">

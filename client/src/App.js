@@ -17,6 +17,7 @@ import CatalogPage from './component/catalog/CatalogPage';
 import SearchResults from './component/header/SearchResults';
 import BookDetails from './component/header/page/BookDetails';
 import Cart from './component/header/Cart';
+import AuthorBook from './component/header/page/AuthorBook';
 const App = () => {
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
@@ -45,13 +46,15 @@ const App = () => {
           <Route path="/payment" element={<Payment />} />
           <Route path="/wholesale" element={<WholeSale />} />
           <Route path="/delivery" element={<Delivery />} />
-          <Route path="/publisher/:publisherName" element={<BooksByPublisher />} />
+          <Route path="/publisher/:publisherId" element={<BooksByPublisher />} />
           <Route path="/catalog/:categoryId" element={<CatalogPage />} />
           <Route path='/catalog/:categoryId/:subcategoryId/' element={<CatalogPage />} />
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/book/:bookId" element={<BookDetails />} />
+          <Route path='/catalog/bestseller' element={<CatalogPage />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/author/:authorId" element={<AuthorBook />} />
           <Route
             path="/account/*"
             element={<PrivateRoute element={<AccountPage />} requiredRole="user" />}

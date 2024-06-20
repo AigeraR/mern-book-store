@@ -4,6 +4,7 @@ import axios from 'axios';
 import SimilarBooks from './SimilarBooks'; // Импорт компонента SimilarBooks
 import Header from '../Header';
 import Cart from '../Cart';
+import Footer from '../../footer/Footer';
 
 const BookDetails = () => {
     const { bookId } = useParams();
@@ -61,7 +62,7 @@ const BookDetails = () => {
     return (
         <>
             <Header />
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-4 py-8 ">
                 <nav className="text-sm mb-6">
                     <Link to="/" className="text-gray-500 hover:text-gray-700 transition duration-200">Главная</Link> &gt;
                     <Link to="/catalog" className="text-gray-500 hover:text-gray-700 transition duration-200">Каталог</Link> &gt;
@@ -69,7 +70,7 @@ const BookDetails = () => {
                     <Link to={`/catalog/${book.category._id}/${book.subcategory._id}`} className="text-gray-500 hover:text-gray-700 transition duration-200">{book.subcategory.name}</Link> &gt;
                     <span className="text-gray-600">{book.title}</span>
                 </nav>
-                <div className="flex flex-col lg:flex-row lg:space-x-8">
+                <div className="flex flex-col lg:flex-row lg:space-x-8 pl-12">
                     {/* Колонка 1: Изображение книги */}
                     <div className="lg:w-56 mb-8 lg:mb-0 xl:w-60 md:w-30 w-20">
                         <img src={book.image} alt={book.title} className="w-full h-auto object-cover rounded-lg shadow-lg" />
@@ -128,6 +129,7 @@ const BookDetails = () => {
                 </div>
                 <SimilarBooks books={similarBooks} />
             </div>
+            <Footer />
         </>
     );
 };

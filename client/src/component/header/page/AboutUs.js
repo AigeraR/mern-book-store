@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../Header';
 import Breadcrumbs from '../../Breadcrumbs';
+import Footer from '../../footer/Footer';
 const AboutUs = () => {
     return (
         <>
@@ -35,6 +36,7 @@ const AboutUs = () => {
                     </p>
                 </section>
             </div>
+            <Footer/>
         </>
     );
 }
