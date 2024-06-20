@@ -50,13 +50,13 @@ export default function Example({ userName, cartItemCount }) {
         featured: [
           {
             name: 'Бестселлер',
-            href: '/bestseller',
+            href: 'catalog/bestseller',
             imageSrc: 'https://ndc.book24.ru/resize/820x1180/iblock/a9f/a9f13a9db6c6591c197f59d1c50b483c/55fbd607f148d871c96e60d36cfd3f3f.jpg',
             imageAlt: 'бестселлер',
           },
           {
             name: 'Популярное',
-            href: '#',
+            href: '/catalog',
             imageSrc: 'https://litres.ru/pub/c/cover/123230.jpg',
             imageAlt: 'популярное',
           },
@@ -72,10 +72,6 @@ export default function Example({ userName, cartItemCount }) {
         })),
       },
     ] : [],
-    pages: [
-      { name: 'Company', href: '#' },
-      { name: 'Stores', href: '#' },
-    ],
   }
 
   return (

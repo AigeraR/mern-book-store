@@ -72,7 +72,7 @@ const Authors = () => {
         setFilteredAuthors(authors.filter((author) => author.name.toLowerCase().includes(searchTerm)));
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div>Загрузка...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (

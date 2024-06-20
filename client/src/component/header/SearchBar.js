@@ -26,7 +26,14 @@ const SearchBar = ({ className }) => {
       setSearchResults([]);
     }
   }, [searchTerm]);
-
+   const getBookAuthorbyId = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/author/getAuthorByID/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+   }
   // Close search results when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -67,8 +74,18 @@ const SearchBar = ({ className }) => {
         <div className="absolute z-50 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
           {searchResults.map((book) => (
             <div key={book._id} className="flex items-center justify-between p-2 border-b border-gray-200">
-               <Link to={`/book/${book._id}`}>   <h3 className="font-semibold">{book.title}</h3></Link>
-                  {/* <BookCard key={book._id} book={book} /> */}
+              <Link to={`/book/${book._id}`}>
+              <div className='flex items-center space-x-5'>
+                <img
+                  src={book.image}
+                  alt={book.title}
+                  className="w-10 h-10 object-cover rounded-md shadow-md "
+                  onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/150"; }}
+                />
+                <h3 className="font-semibold text-gray-600 text-sm hover:text-blue-500">{book.title}</h3>               
+              </div>
+                
+              </Link>
             </div>
           ))}
         </div>

@@ -38,7 +38,7 @@ function BestSeller() {
         fetchBooks();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div>Загрузка...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -52,8 +52,8 @@ function BestSeller() {
                             <img src={book.image} alt={book.title} className="max-h-full max-w-full object-contain transition-transform duration-600 transform hover:scale-105" />
                         </div>
                         <h2 className="text-gray-800 text-lg sm:text-md md:text-lg font-bold pt-4">{`${book.price} сом`}</h2>
-                        <p className="text-gray-400 text-xs sm:text-sm md:text-base">{book.category.name}</p>
-                        <h2 className="text-sm sm:text-sm md:text-md font-semibold">{book.title}</h2>
+                        {/* <p className="text-gray-400 text-xs sm:text-sm md:text-base">{book.category.name}</p> */}
+                        <h2 className="text-sm sm:text-sm md:text-md font-open-sans overflow-hidden">{book.title}</h2>
                         <p className="text-gray-400 text-xs sm:text-sm md:text-base font-bold">{book.authorName}</p>
                         <div className='absolute top-0 left-0 w-32 bg-orange-400 rounded-r-lg'>
                             <p className='p-1 text-center text-white font-open-sans'>бестселлер</p>

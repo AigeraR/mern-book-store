@@ -40,7 +40,7 @@ const AuthorBook = () => {
         fetchPublisher();
     }, [publisherId]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div>Загрузка...</div>;
     if (error) return <div>Error: {error}</div>;
 
     if (!publisher) return null;
