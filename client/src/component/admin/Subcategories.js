@@ -11,7 +11,7 @@ const Subcategories = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [showInputs, setShowInputs] = useState(false); // Add state for input visibility
-
+    const [showAll, setShowAll] = useState(false);
     useEffect(() => {
         fetchSubcategories();
         fetchCategories();
@@ -73,10 +73,12 @@ const Subcategories = () => {
     };
 
     const getCategoryName = (categoryId) => {
-        const category = categories.find(category => category._id === categoryId);
-        return category ? category.name : '';
+        const category = categories.find((category) => category._id === categoryId);
+        return category ? category.name : 'y';
     };
-
+    const hangleShowAll = () => {
+        setShowAll(prevShowAll => !prevShowAll);
+    };
     return (
         <div className="container mx-auto p-4">
             <h2 className="text-2xl font-semibold mb-4">Подкатегории</h2>
@@ -131,13 +133,13 @@ const Subcategories = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {subcategories.map((subcategory, index) => (
+                        {subcategories.slice(0, showAll ? subcategories.length : 5).map((subcategory, index) => (
                             <tr key={subcategory._id}>
-                                <td className="px-2 py-1 whitespace-nowrap text-sm">{index + 1}</td>
-                                <td className="px-2 py-1 whitespace-nowrap text-sm">{subcategory.name}</td>
-                                <td className="px-2 py-1 whitespace-wrap text-sm">{subcategory.description}</td>
-                                <td className="px-2 py-1 whitespace-nowrap text-sm">{getCategoryName(subcategory.category)}</td>
-                                <td className="px-2 py-1 whitespace-nowrap text-sm">
+                                <td className="px-2 py-1 whitespace-nowrap text-xs">{index + 1}</td>
+                                <td className="px-2 py-1 whitespace-nowrap text-xs">{subcategory.name}</td>
+                                <td className="px-2 py-1 whitespace-wrap text-xs">{subcategory.description}</td>
+                                <td className="px-2 py-1 whitespace-nowrap text-xs"> {subcategory.category ? subcategory.category.name : ' '}</td>
+                                <td className="px-2 py-1 whitespace-nowrap text-xs">
                                     <button onClick={() => handleEditSubcategory(subcategory)} className="bg-green-500 text-white p-1.5 rounded-lg mr-2">
                                         <FaEdit className='h-4 w-4' />
                                     </button>
@@ -149,6 +151,11 @@ const Subcategories = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className="flex justify-start mt-4">
+                    <button onClick={hangleShowAll} className="bg-blue-500 text-white p-2 text-xs rounded-lg">
+                        {showAll ? 'Показать меньше' : 'Показать все'}
+                    </button>
+                </div>
             </div>
         </div>
     );

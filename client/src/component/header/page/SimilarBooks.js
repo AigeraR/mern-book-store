@@ -73,8 +73,8 @@ const Carousel = ({ books }) => {
                         />
                     </Link>
                     <div className="text-center flex flex-col items-center">
-                        <h3 className="text-sm font-semibold text-gray-800" style={{ height: '3em' }}>{book.title}</h3>
-                        <p className="text-sm text-gray-600 mb-1">{book.author.name}</p>
+                        <h3 className="text-sm font-semibold text-gray-800 mb-1">{book.title}</h3>
+                        <p className="text-sm text-gray-600 ">{book.author.name}</p>
                         <p className="text-sm font-bold">{book.price} сом</p>
                         <div className="flex justify-center items-center space-x-3 mt-2">
                             <div className="text-sm border border-gray-400 px-3 py-1 rounded-md hover:bg-green-400 hover:text-white">

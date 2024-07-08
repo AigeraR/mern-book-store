@@ -13,14 +13,13 @@ const Books = () => {
     const [editingBook, setEditingBook] = useState(null);
     const [subcategories, setSubcategories] = useState([]);
     const [expandedBookId, setExpandedBookId] = useState(null);
+    const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
         fetchBooks();
         fetchAuthors();
         fetchCategories();
         fetchPublishers();
-       
-        
     }, []);
 
     const fetchBooks = async () => {
@@ -51,42 +50,28 @@ const Books = () => {
         });
         fetchBooks();
     };
-
     const handleUpdateBook = async (bookId, updatedBook) => {
         if (editingBook && editingBook.author && updatedBook.author && updatedBook.author._id !== editingBook.author._id) {
             const newAuthor = await authors.find(author => author._id === updatedBook.author._id);
             updatedBook = { ...updatedBook, author: newAuthor };
         }
-    
         await axios.put(`http://localhost:5000/api/books/update/${bookId}`, updatedBook, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
         fetchBooks();
-        setEditingBook(null); 
-    }; 
-
+        setEditingBook(null);
+    };
     const getAuthorName = (authorId) => {
         const author = authors.find(author => author._id === authorId);
         return author ? author.name : 'Unknown';
     };
-    const getPublisherName = (publisherId) => {
-        const publisher = publishers.find(publisher => publisher._id === publisherId);
-        return publisher ? publisher.name : 'Unknown';
-    };
-
     const startEditingBook = (book) => {
         setEditingBook(book);
         const categoryId = book.category._id; // Получаем идентификатор категории из книги
         updateSubcategories(categoryId); // Обновляем подкатегории
     };
-    //update books in author.books array when author is changed
-    const handleAuthorChange = (e) => {
-        const authorId = e.target.value;
-        const author = authors.find(author => author._id === authorId);
-        setEditingBook(prevBook => ({ ...prevBook, author }));
-    }
     const handleEditChange = (e) => {
         const { name, value } = e.target;
         setEditingBook(prevBook => {
@@ -110,7 +95,7 @@ const Books = () => {
                 const subCategory = subcategories.find(subCategory => subCategory._id === subCategoryId);
                 updatedBook.subCategory = subCategory;
             }
-            if (name =='book') {
+            if (name == 'book') {
                 const bookId = value;
                 const book = authors.books.find(book => book._id === bookId);
                 updatedBook.book = book;
@@ -118,10 +103,9 @@ const Books = () => {
             return updatedBook;
         });
     };
-   
+
     const updateSubcategories = async (categoryId) => {
         if (!categoryId) return;
-        
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -150,24 +134,28 @@ const Books = () => {
         book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         getAuthorName(book.author._id).toLowerCase().includes(searchTerm.toLowerCase())
     );
+    const handleShowAll = () => {
+        setShowAll(prevShowAll => !prevShowAll);
+    }
 
     return (
         <div className="container mx-auto p-4 text-sm">
             <h2 className="text-3xl font-semibold mb-6">Книги</h2>
             <AddBook fetchBooks={fetchBooks} /> {/* Use the AddBook component */}
 
+            <div className="mb-6">
+                <h3 className="text-md font-bold mb-4">Поиск</h3>
+                <input
+                    type="text"
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"
+                    placeholder="поиск автора и названия..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Управление книгами</h3>
             <div className="bg-white p-6 rounded-lg overflow-x-auto">
-                <h3 className="text-xl font-bold mb-4">Управление книгами</h3>
-                <div className="mb-6">
-                    <h3 className="text-md font-bold mb-4">Поиск</h3>
-                    <input
-                        type="text"
-                        className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"
-                        placeholder="поиск автора и названия..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
+
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
@@ -186,7 +174,7 @@ const Books = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredBooks.map((book, index) => (
+                        {filteredBooks.slice(0, showAll ? books.length : 5).map((book, index) => (
                             <tr key={book._id}>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{index + 1}</td>
                                 <td className="px-3 py-2 whitespace-wrap text-xs">{book.title}</td>
@@ -195,7 +183,7 @@ const Books = () => {
                                     {expandedBookId === book._id
                                         ? book.description
                                         : `${book.description.substring(0, 20)}... `}
-                                    <button onClick={() => handleToggleDescription(book._id)}>
+                                    <button onClick={() => handleToggleDescription(book._id)} className="text-blue-500 hover:text-blue-700">
                                         {expandedBookId === book._id ? 'Скрыть' : 'Подробнее'}
                                     </button>
                                 </td>
@@ -226,6 +214,11 @@ const Books = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className="flex justify-start mt-4">
+                    <button onClick={handleShowAll} className="bg-blue-500 text-white p-2 rounded-lg">
+                        {showAll ? 'Показать меньше' : 'Показать все'}
+                    </button>
+                </div>
                 {editingBook && (
                     <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
                         <h3 className="text-xl font-bold mb-4">Редактирование книги</h3>

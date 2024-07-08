@@ -108,7 +108,7 @@ const AddBook = ({ fetchBooks }) => {
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <h3 className="text-md font-bold mb-4">Добавить книгу</h3>
       <button onClick={() => setShowAddBookForm(!showAddBookForm)} className="bg-blue-500 text-white p-2 rounded-lg mb-4">
-        {showAddBookForm ? 'Отменить' : 'Добавить книгу'}
+        {showAddBookForm ? 'Отменить' : 'Добавить'}
       </button>
       {showAddBookForm && (
         <div>

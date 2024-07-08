@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaEdit, FaPlus } from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp, FaEdit, FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import AddAuthor from './AddAuthor';
 
@@ -11,6 +11,9 @@ const Authors = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editAuthor, setEditAuthor] = useState(null);
+    const [expandedBio, setExpandedBio] = useState(null);
+    const [showAll, setShowAll] = useState(false); 
+
 
     useEffect(() => {
         const fetchAuthors = async () => {
@@ -72,6 +75,12 @@ const Authors = () => {
         setFilteredAuthors(authors.filter((author) => author.name.toLowerCase().includes(searchTerm)));
     };
 
+    const handleToggleBio = (authorId) => {
+        setExpandedBio(prevId => prevId === authorId ? null : authorId);
+    }
+    const handleShowAllToggle = () => { 
+        setShowAll(prevShowAll => !prevShowAll);
+    }
     if (loading) return <div>Загрузка...</div>;
     if (error) return <div>Error: {error}</div>;
 
@@ -85,7 +94,7 @@ const Authors = () => {
                     placeholder="Поиск..."
                     value={searchTerm}
                     onChange={handleSearch}
-                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"  
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-200 sm:text-sm sm:leading-6"
                 />
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
@@ -100,22 +109,32 @@ const Authors = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredAuthors.map((author, index) => (
+                        {(showAll ? filteredAuthors : filteredAuthors.slice(0, 5)).map((author, index) => (
                             <tr key={author._id}>
                                 <td className="px-3 py-2 whitespace-nowrap text-xs">{index + 1}</td>
                                 <td className="px-3 py-2 whitespace-nowrap text-xs">{author.name}</td>
-                                <td className="px-3 py-2 whitespace-wrap text-xs">{author.bio}</td>
+                                <td className="px-3 py-2 whitespace-wrap text-xs">
+                                    {expandedBio === author._id ? author.bio : `${author.bio.slice(0, 20)}...`}
+                                    <button onClick={() => handleToggleBio(author._id)} className="ml-2 text-blue-500">
+                                        {expandedBio === author._id ? 'Скрыть' : 'Подробнее'}
+                                    </button>
+                                </td>
                                 <td className="px-3 py-2 whitespace-nowrap text-sm">
-                                    <img src={author.img} alt={author.name} className="w-16 h-16 object-cover" />
+                                    <img src={author.img} alt={author.name} className="w-10 h-10 object-cover" />
                                 </td>
                                 <td className="px-2 py-2 whitespace-nowrap text-sm justify-center space-x-2">
                                     <button onClick={() => deleteAuthor(author._id)} className="bg-red-500 text-white p-1.5 rounded-lg"><RiDeleteBin6Line className='h-4 w-4' /></button>
                                     <button onClick={() => handleEditAuthor(author)} className="bg-green-500 text-white p-1.5 rounded-lg mr-2"><FaEdit className='h-4 w-4' /></button>
                                 </td>
-                            </tr>
+                            </tr>       
                         ))}
                     </tbody>
                 </table>
+                <div className="flex justify-start mt-4">
+                    <button onClick={handleShowAllToggle} className="bg-blue-500 text-white p-2 rounded-lg">
+                        {showAll ? 'Показать меньше' : 'Показать все'}
+                    </button>
+                </div>
             </div>
             {editAuthor ? (
                 <div className="bg-white p-6 rounded-lg shadow-md mt-6">
@@ -146,7 +165,7 @@ const Authors = () => {
                     </form>
                 </div>
             ) : (
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-start mt-4">
                     <AddAuthor handleAddAuthor={handleAddAuthor} />
                 </div>
             )}

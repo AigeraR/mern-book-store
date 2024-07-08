@@ -1,5 +1,4 @@
 import React from 'react';
-import { CiDeliveryTruck } from "react-icons/ci";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { FaTruck } from 'react-icons/fa';

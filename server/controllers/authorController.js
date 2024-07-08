@@ -62,6 +62,7 @@ exports.updateAuthor = async (req, res) => {
 exports.deleteAuthor = async (req, res) => {
     try {
         const deletedAuthor = await Author.findByIdAndDelete(req.params.id);
+        await Book.deleteMany({ author: req.params.id });
         if (!deletedAuthor) return res.status(404).json({ message: 'Author not found' });
         res.status(200).json({ message: 'Author deleted successfully' });
     } catch (error) {

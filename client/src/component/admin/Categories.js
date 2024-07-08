@@ -9,6 +9,8 @@ const Categories = () => {
   const [newCategory, setNewCategory] = useState({ name: '', description: '' });
   const [showAddForm, setShowAddForm] = useState(false);
   const [editCategory, setEditCategory] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
 
   useEffect(() => {
     fetchCategories();
@@ -49,17 +51,22 @@ const Categories = () => {
     setShowAddForm(true);
   };
 
-  const handleDeleteCategory = async (categoryId) => {
+  const deleteCategory = async () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.delete(`http://localhost:5000/api/category/deleteCategory/${categoryId}`, config);
+      await axios.delete(`http://localhost:5000/api/category/deleteCategory/${categoryToDelete}`, config);
+      setCategoryToDelete(null);
+      setShowConfirmation(false);
       fetchCategories();
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleDeleteCategory = (categoryId) => {
+    setCategoryToDelete(categoryId);
+    setShowConfirmation(true);
+  }
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">Категории</h2>
@@ -103,10 +110,10 @@ const Categories = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {categories.map((category, index) => (
               <tr key={category._id}>
-                <td className="px-2 py-1 whitespace-nowrap text-sm">{index + 1}</td>
-                <td className="px-2 py-1 whitespace-nowrap text-sm">{category.name}</td>
-                <td className="px-2 py-1 whitespace-wrap text-sm overflow-y-auto">{category.description}</td>
-                <td className="px-2 py-1 whitespace-nowrap text-sm">
+                <td className="px-2 py-1 whitespace-nowrap text-xs">{index + 1}</td>
+                <td className="px-2 py-1 whitespace-nowrap text-xs">{category.name}</td>
+                <td className="px-2 py-1 whitespace-wrap text-xs overflow-y-auto">{category.description}</td>
+                <td className="px-2 py-1 whitespace-nowrap text-xs">
                   <button
                     onClick={() => handleEditCategory(category)}
                     className="bg-green-500 text-white p-1.5 rounded-lg mr-2"
@@ -116,8 +123,8 @@ const Categories = () => {
                   <button
                     onClick={() => handleDeleteCategory(category._id)}
                     className="bg-red-500 text-white p-1.5 rounded-lg"
-                  ><RiDeleteBin6Line  className='h-4 w-4'/>
-                  
+                  ><RiDeleteBin6Line className='h-4 w-4' />
+
                   </button>
                 </td>
               </tr>
@@ -125,6 +132,35 @@ const Categories = () => {
           </tbody>
         </table>
       </div>
+
+      {showConfirmation && (
+        <div
+          className="fixed inset-0 flex items-center justify-center  z-50"
+          style={{ backgroundColor: 'rgba(31, 41, 55, 0.75)' }} // bg-gray-800 с opacity 75%
+          onClick={() => setShowConfirmation(false)}
+        >
+          <div
+            className="bg-white p-4 rounded-lg shadow-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm font-semibold mb-4">Вы уверены, что хотите удалить эту категорию?</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="bg-gray-500 text-white p-2 rounded-lg mr-2"
+              >
+                Отмена
+              </button>
+              <button
+                onClick={deleteCategory}
+                className="bg-red-500 text-white p-2 rounded-lg"
+              >
+                Удалить
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
