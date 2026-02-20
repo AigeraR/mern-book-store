@@ -9,7 +9,7 @@ const bannerImages = [
     alt: 'Banner 1'
   },
   {
-    url: 'https://ndc.book24.ru/resize/2200x640/iblock/eee/eeed1d4fbfef69b0fb522baf73594cd2/2fcf523c235d830d20b69fc4b065f90f.jpg',
+    url:'https://ndc.book24.ru/resize/2200x640/iblock/368/3689d91df9bcf06b2764b283eb45df76/a33c43bd72e5dc548e9fc2dd6958c95a.png',
     alt: 'Banner 2'
   },
   {
