@@ -1,59 +1,46 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FiShoppingCart } from 'react-icons/fi';
 import { FaUserAlt } from 'react-icons/fa';
 import { MdAccountCircle } from 'react-icons/md';
 
 const UserCart = ({ cartItemCount, userName }) => {
-    const navigate = useNavigate(); 
-    const userRole = localStorage.getItem('role');
+    // Добавляем локальное состояние для роли, чтобы React "видел" изменения
+    const [role, setRole] = useState(localStorage.getItem('role'));
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userName');
-        localStorage.removeItem('role');
-        navigate('/login');
-    };
-
-    const handleAdminPanel = () => {
-        navigate('/admin');
-    };
-
-    console.log('userName:', userName); // Debugging statement
-    console.log('userRole:', userRole); // Debugging statement
+    // Следим за изменением userName (обычно меняется при входе/выходе)
+    useEffect(() => {
+        setRole(localStorage.getItem('role'));
+    }, [userName]); 
 
     return (
         <div className="flex items-center justify-end space-x-4">
             {userName ? (
-                userRole === 'user' ? (
-                    <Link to="/account" className="flex-col flex items-center justify-center space-y-1">
-                        <FaUserAlt className="h-4 w-4 xl:h-5 xl:w-5 lg:h-4 lg:w-4 md:h-4 md:w-4 text-blue-400 hover:text-red-500" aria-hidden="true" />
-                        <span className="text-xs font-open-sans font-bold">Аккаунт</span>
+                /* Используем четкое условие: если админ - одна ссылка, иначе - другая */
+                role === 'admin' ? (
+                    <Link to="/admin" className="flex flex-col items-center">
+                        <MdAccountCircle className="h-5 w-5 text-blue-500 hover:text-red-500" />
+                        <span className="text-[10px] font-bold">Админ</span>
                     </Link>
                 ) : (
-                    userRole === 'admin' && (
-                        <Link to="/admin" className="flex-col flex items-center justify-center space-y-1">
-                            <MdAccountCircle className="h-4 w-4 xl:h-5 xl:w-5 lg:h-4 lg:w-4 md:h-4 md:w-4 text-blue-400 hover:text-red-500" aria-hidden="true" />
-                            <span className="text-xs font-open-sans font-bold">Админ панель</span>
-                        </Link>
-                    )
+                    <Link to="/account" className="flex flex-col items-center">
+                        <FaUserAlt className="h-4 w-4 text-blue-500 hover:text-red-500" />
+                        <span className="text-[10px] font-bold">{userName}</span>
+                    </Link>
                 )
             ) : (
                 <div className='flex items-center space-x-3'>
-                    <Link to="/login" className="text-xs font-medium text-gray-700 hover:text-gray-800">
-                        Войти
-                    </Link>
-                    <span className="inline-block h-6 w-px bg-gray-400" aria-hidden="true" />
-                    <Link to="/register" className="text-xs font-medium text-gray-700 hover:text-gray-800">
-                        Регистрация
-                    </Link>
+                    <Link to="/login" className="text-xs">Войти</Link>
+                    <span className="h-6 w-px bg-gray-400" />
+                    <Link to="/register" className="text-xs">Регистрация</Link>
                 </div>
             )}
-            <div className="relative flex items-center">
-                <Link to="/cart" className="group flex items-center">
-                    <FiShoppingCart className="h-7 w-7 text-gray-400 hover:text-gray-500" aria-hidden="true" />
+
+            <div className="relative">
+                <Link to="/cart">
+                    <FiShoppingCart className="h-7 w-7 text-gray-400" />
                     {cartItemCount > 0 && (
-                        <span className="absolute -top-3 left-2 bg-main-color text-white text-sm font-semibold rounded-full h-5 w-6 flex items-center justify-center">
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center">
                             {cartItemCount}
                         </span>
                     )}

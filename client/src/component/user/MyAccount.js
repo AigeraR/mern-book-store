@@ -26,6 +26,8 @@ const MyAccount = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setMessage('');
+    setErrorMessage('');
     if (!user.name || !user.email || !user.phone) {
       setErrorMessage('Пожалуйста, заполните все обязательные поля.');
       return;

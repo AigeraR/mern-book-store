@@ -18,26 +18,33 @@ import SearchResults from './component/header/SearchResults';
 import BookDetails from './component/header/page/BookDetails';
 import Cart from './component/header/Cart';
 import AuthorBook from './component/header/page/AuthorBook';
-const App = () => {
+
+// Компонент защиты роутов
+// Мы выносим получение token и role ВНУТРЬ компонента, 
+// чтобы проверка происходила в момент каждого клика по ссылке.
+const PrivateRoute = ({ element, requiredRole }) => {
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
 
-  const PrivateRoute = ({ element, requiredRole, ...rest }) => {
-    if (!token) {
-      return <Navigate to="/" />;
-    }
+  if (!token) {
+    // Если токена нет, отправляем на логин
+    return <Navigate to="/login" replace />;
+  }
 
-    if (requiredRole && role !== requiredRole) {
-      return <Navigate to="/" />;
-    }
+  if (requiredRole && role !== requiredRole) {
+    // Если роль не совпадает, отправляем на главную
+    return <Navigate to="/" replace />;
+  }
 
-    return element;
-  };
+  return element;
+};
 
+const App = () => {
   return (
     <Router>
       <div>
         <Routes>
+          {/* Публичные роуты */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -55,14 +62,31 @@ const App = () => {
           <Route path='/catalog/bestseller' element={<CatalogPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/author/:authorId" element={<AuthorBook />} />
+
+          {/* Защищенный роут Личного кабинета */}
           <Route
             path="/account/*"
-            element={<PrivateRoute element={<AccountPage />} requiredRole="user" />}
+            element={
+              <PrivateRoute 
+                element={<AccountPage />} 
+                requiredRole="user" 
+              />
+            }
           />
+
+          {/* Защищенный роут Админки */}
           <Route
             path="/admin/*"
-            element={<PrivateRoute element={<AdminPanel />} requiredRole="admin" />}
+            element={
+              <PrivateRoute 
+                element={<AdminPanel />} 
+                requiredRole="admin" 
+              />
+            }
           />
+
+          {/* Редирект для несуществующих страниц */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </Router>
