@@ -1,6 +1,6 @@
 // server/models/User.js
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 const addressSchema = new mongoose.Schema({
     street: { type: String, required: true },
@@ -50,14 +50,14 @@ UserSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         return next();
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    const salt = await bcryptjs.genSalt(10);
+    this.password = await bcryptjs.hash(this.password, salt);
     next();
 });
 
 // Method to compare password
 UserSchema.methods.matchPassword = async function(password) {
-    return await bcrypt.compare(password, this.password);
+    return await bcryptjs.compare(password, this.password);
 };
 
 module.exports = mongoose.model('User', UserSchema);
