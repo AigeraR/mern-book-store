@@ -20,7 +20,7 @@ const Categories = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.get('http://localhost:5000/api/category/getAllCategories', config);
+      const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/category/getAllCategories', config);
       setCategories(response.data);
     } catch (error) {
       console.log(error);
@@ -32,9 +32,9 @@ const Categories = () => {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
       if (editCategory) {
-        await axios.put(`http://localhost:5000/api/category/updateCategory/${editCategory._id}`, newCategory, config);
+        await axios.put(`https://mern-book-store-pg5d.onrender.com/api/category/updateCategory/${editCategory._id}`, newCategory, config);
       } else {
-        await axios.post('http://localhost:5000/api/category/createCategory', newCategory, config);
+        await axios.post('https://mern-book-store-pg5d.onrender.com/api/category/createCategory', newCategory, config);
       }
       setNewCategory({ name: '', description: '' });
       setShowAddForm(false);
@@ -55,7 +55,7 @@ const Categories = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.delete(`http://localhost:5000/api/category/deleteCategory/${categoryToDelete}`, config);
+      await axios.delete(`https://mern-book-store-pg5d.onrender.com/api/category/deleteCategory/${categoryToDelete}`, config);
       setCategoryToDelete(null);
       setShowConfirmation(false);
       fetchCategories();

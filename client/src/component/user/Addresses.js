@@ -11,7 +11,7 @@ const Addresses = () => {
             try {
                 const token = localStorage.getItem('token');
                 const config = { headers: { Authorization: `Bearer ${token}` } };
-                const response = await axios.get('http://localhost:5000/api/auth/addresses', config);
+                const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/auth/addresses', config);
                 if (Array.isArray(response.data)) {
                     setAddresses(response.data);
                 } else {
@@ -29,7 +29,7 @@ const Addresses = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.post('http://localhost:5000/api/auth/address', newAddress, config);
+            const response = await axios.post('https://mern-book-store-pg5d.onrender.com/api/auth/address', newAddress, config);
             if (Array.isArray(response.data)) {
                 setAddresses(response.data);
             } else {

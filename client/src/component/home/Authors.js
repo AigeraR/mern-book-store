@@ -88,7 +88,7 @@ function Authors() {
     useEffect(() => {
         const fetchAuthors = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/author/getAuthors');
+                const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/author/getAuthors');
                 //unique authors
                 const uniqueAuthors = Array.from(new Set(response.data.map(a => a.name)))
                 .map(name => {

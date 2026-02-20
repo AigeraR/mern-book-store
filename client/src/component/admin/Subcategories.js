@@ -18,14 +18,14 @@ const Subcategories = () => {
     }, []);
 
     const fetchSubcategories = async () => {
-        const response = await axios.get('http://localhost:5000/api/subcategory/getAll');
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/subcategory/getAll');
         setSubcategories(response.data);
     };
 
     const fetchCategories = async () => {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get('http://localhost:5000/api/category/getAllCategories', config);
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/category/getAllCategories', config);
         setCategories(response.data);
     };
 
@@ -39,10 +39,10 @@ const Subcategories = () => {
 
         try {
             if (editSubcategory) {
-                await axios.put(`http://localhost:5000/api/subcategory/update/${editSubcategory._id}`, newSubcategory, config);
+                await axios.put(`https://mern-book-store-pg5d.onrender.com/api/subcategory/update/${editSubcategory._id}`, newSubcategory, config);
                 setSuccessMessage('Подкатегория успешно обновлена.');
             } else {
-                await axios.post('http://localhost:5000/api/subcategory/create', newSubcategory, config);
+                await axios.post('https://mern-book-store-pg5d.onrender.com/api/subcategory/create', newSubcategory, config);
                 setSuccessMessage('Подкатегория успешно добавлена.');
             }
             setNewSubcategory({ name: '', description: '', category: '' });
@@ -65,7 +65,7 @@ const Subcategories = () => {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
         try {
-            await axios.delete(`http://localhost:5000/api/subcategory/delete/${id}`, config);
+            await axios.delete(`https://mern-book-store-pg5d.onrender.com/api/subcategory/delete/${id}`, config);
             fetchSubcategories();
         } catch (error) {
             console.log(error);

@@ -8,7 +8,7 @@ const BookCard = ({ book }) => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.post(`http://localhost:5000/api/books/addToCart/${book._id}`, {}, config);
+            const response = await axios.post(`https://mern-book-store-pg5d.onrender.com/api/books/addToCart/${book._id}`, {}, config);
             console.log(response.data);
             alert('Товар добавлен в корзину');
         } catch (error) {

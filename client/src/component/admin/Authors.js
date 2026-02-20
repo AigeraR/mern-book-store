@@ -18,7 +18,7 @@ const Authors = () => {
     useEffect(() => {
         const fetchAuthors = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/author/getAuthors');
+                const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/author/getAuthors');
                 setAuthors(response.data);
                 setFilteredAuthors(response.data);
                 setLoading(false);
@@ -34,7 +34,7 @@ const Authors = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.delete(`http://localhost:5000/api/author/deleteAuthorByID/${id}`, config);
+            await axios.delete(`https://mern-book-store-pg5d.onrender.com/api/author/deleteAuthorByID/${id}`, config);
             setAuthors(authors.filter((author) => author._id !== id));
             setFilteredAuthors(filteredAuthors.filter((author) => author._id !== id));
         } catch (error) {
@@ -50,7 +50,7 @@ const Authors = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.put(`http://localhost:5000/api/author/updateAuthorByID/${id}`, updatedAuthor, config);
+            const response = await axios.put(`https://mern-book-store-pg5d.onrender.com/api/author/updateAuthorByID/${id}`, updatedAuthor, config);
             const updatedAuthors = authors.map((author) => (author._id === id ? response.data : author));
             setAuthors(updatedAuthors);
             setFilteredAuthors(updatedAuthors);

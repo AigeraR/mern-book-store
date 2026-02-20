@@ -22,7 +22,7 @@ const AddAuthor = ({ handleAddAuthor }) => {
                 return;
             }
 
-            const response = await axios.post('http://localhost:5000/api/author/create', { name, bio, img, birthdate }, config);
+            const response = await axios.post('https://mern-book-store-pg5d.onrender.com/api/author/create', { name, bio, img, birthdate }, config);
             handleAddAuthor(response.data);
             setName('');
             setBio('');

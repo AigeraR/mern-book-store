@@ -14,7 +14,7 @@ const MyAccount = () => {
       try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get('http://localhost:5000/api/auth/getUser', config);
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/auth/getUser', config);
         setUser(response.data);
       } catch (error) {
         console.log(error);
@@ -35,7 +35,7 @@ const MyAccount = () => {
     try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.put(`http://localhost:5000/api/auth/updateUser/${user._id}`, user, config);
+        const response = await axios.put(`https://mern-book-store-pg5d.onrender.com/api/auth/updateUser/${user._id}`, user, config);
         setUser(response.data);
         setMessage('Данные успешно обновлены.');
     } catch (error) {
@@ -55,7 +55,7 @@ const MyAccount = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.put('http://localhost:5000/api/auth/updatePassword', passwords, config);
+      const response = await axios.put('https://mern-book-store-pg5d.onrender.com/api/auth/updatePassword', passwords, config);
       setPasswordMessage('Пароль успешно обновлен.');
       setPasswords({ oldPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error) {

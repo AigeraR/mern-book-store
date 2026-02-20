@@ -16,9 +16,9 @@ const BookDetails = () => {
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/books/getBookById/${bookId}`);
+                const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/books/getBookById/${bookId}`);
                 setBook(response.data);
-                const similarResponse = await axios.get(`http://localhost:5000/api/books/similar/${bookId}`);
+                const similarResponse = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/books/similar/${bookId}`);
                 setSimilarBooks(similarResponse.data);
             } catch (error) {
                 console.error('Error fetching book details:', error);
@@ -31,7 +31,7 @@ const BookDetails = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.post(`http://localhost:5000/api/cart/addToCart/${bookId}`, {}, config);
+            const response = await axios.post(`https://mern-book-store-pg5d.onrender.com/api/cart/addToCart/${bookId}`, {}, config);
 
             const cartItems = response.data.cart.items;
             const existingCartItem = cartItems.find(item => item.book.toString() === bookId);
@@ -39,14 +39,14 @@ const BookDetails = () => {
             if (existingCartItem) {
                 // Update the quantity of the existing item
                 existingCartItem.quantity++;
-                await axios.put(`http://localhost:5000/api/cart/updateCartItem/${existingCartItem._id}`, { quantity: existingCartItem.quantity }, config);
+                await axios.put(`https://mern-book-store-pg5d.onrender.com/api/cart/updateCartItem/${existingCartItem._id}`, { quantity: existingCartItem.quantity }, config);
             } else {
                 // Create a new cart item
                 const newCartItem = {
                     book: bookId,
                     quantity: 1
                 };
-                await axios.post(`http://localhost:5000/api/cart/addCartItem`, newCartItem, config);
+                await axios.post(`https://mern-book-store-pg5d.onrender.com/api/cart/addCartItem`, newCartItem, config);
             }
 
             setAddedToCart(true);

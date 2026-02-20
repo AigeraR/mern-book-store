@@ -15,7 +15,7 @@ const Users = () => {
       try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get('http://localhost:5000/api/auth/getAllUsers', config);
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/auth/getAllUsers', config);
         setUsers(response.data);
       } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.delete(`http://localhost:5000/api/auth/deleteUserById/${userId}`, config);
+      await axios.delete(`https://mern-book-store-pg5d.onrender.com/api/auth/deleteUserById/${userId}`, config);
       setUsers(users.filter((user) => user._id !== userId));
     } catch (error) {
       console.log(error);
@@ -44,7 +44,7 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.post('http://localhost:5000/api/auth/register', newUser, config);
+      const response = await axios.post('https://mern-book-store-pg5d.onrender.com/api/auth/register', newUser, config);
       setUsers([...users, response.data]);
       setNewUser({ name: '', email: '', role: 'user' }); // Сброс данных нового пользователя
     } catch (error) {
@@ -56,7 +56,7 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.put(`http://localhost:5000/api/auth/updateUser/${editingUser._id}`, editingUser, config);
+      const response = await axios.put(`https://mern-book-store-pg5d.onrender.com/api/auth/updateUser/${editingUser._id}`, editingUser, config);
       setUsers(users.map((user) => (user._id === editingUser._id ? response.data : user)));
       setEditingUser(null);
     } catch (error) {

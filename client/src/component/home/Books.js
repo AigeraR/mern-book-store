@@ -10,12 +10,12 @@ function Books() {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/books/allBook');
+                const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/books/allBook');
                 const booksData = response.data;
 
                 // Создаем массив запросов для получения авторов
                 const authorRequests = booksData.map(book =>
-                    axios.get(`http://localhost:5000/api/author/getAuthorById/${book.author._id}`)
+                    axios.get(`https://mern-book-store-pg5d.onrender.com/api/author/getAuthorById/${book.author._id}`)
                 );
 
                 // Выполняем все запросы параллельно

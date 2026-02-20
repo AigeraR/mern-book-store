@@ -18,7 +18,7 @@ const AuthorBook = () => {
     useEffect(() => {
         const fetchAuthor = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/author/getAuthorById/${authorId}`);
+                const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/author/getAuthorById/${authorId}`);
                 setAuthor(response.data);
                 setLoading(false);
             } catch (error) {
@@ -29,7 +29,7 @@ const AuthorBook = () => {
 
         const fetchAllBooks = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/books/allBook');
+                const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/books/allBook');
                 const authorBooks = response.data.filter(book => book.author._id === authorId);
                 setBooks(authorBooks);
                 setLoading(false);

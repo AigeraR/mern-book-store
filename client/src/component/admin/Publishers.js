@@ -16,7 +16,7 @@ const Publishers = () => {
     }, []);
 
     const fetchPublishers = async () => {
-        const response = await axios.get('http://localhost:5000/api/publisher/getAll');
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/publisher/getAll');
         setPublishers(response.data);
     };
 
@@ -38,7 +38,7 @@ const Publishers = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.post(`http://localhost:5000/api/publisher/create`, newPublisher, config);
+            await axios.post(`https://mern-book-store-pg5d.onrender.com/api/publisher/create`, newPublisher, config);
             fetchPublishers();
             setNewPublisher({ name: '', logoUrl: '' });
             setShowForm(false);
@@ -59,7 +59,7 @@ const Publishers = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.put(`http://localhost:5000/api/publisher/update/${publisherId}`, updatedPublisher, config);
+            await axios.put(`https://mern-book-store-pg5d.onrender.com/api/publisher/update/${publisherId}`, updatedPublisher, config);
             fetchPublishers();
             setEditingPublisher(null);
             setMessage({ type: 'success', text: 'Издатель успешно обновлен!' });
@@ -73,7 +73,7 @@ const Publishers = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.delete(`http://localhost:5000/api/publisher/delete/${publisherId}`, config);
+            await axios.delete(`https://mern-book-store-pg5d.onrender.com/api/publisher/delete/${publisherId}`, config);
             fetchPublishers();
         } catch (error) {
             console.log(error);

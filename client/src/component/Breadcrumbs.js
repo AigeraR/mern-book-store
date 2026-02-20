@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
 
     useEffect(() => {
         // Запрос на получение данных о категориях и подкатегориях
-        axios.get('http://localhost:5000/api/category/getAllCategories')
+        axios.get('https://mern-book-store-pg5d.onrender.com/api/category/getAllCategories')
             .then(response => {
                 const categories = response.data;
                 const mapping = {};

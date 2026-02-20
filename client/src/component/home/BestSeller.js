@@ -10,12 +10,12 @@ function BestSeller() {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/books/bestsellers');
+                const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/books/bestsellers');
                 const booksData = response.data;
 
                 // Fetch all authors
                 const authorRequests = booksData.map(book =>
-                    axios.get(`http://localhost:5000/api/author/getAuthorById/${book.author._id}`)
+                    axios.get(`https://mern-book-store-pg5d.onrender.com/api/author/getAuthorById/${book.author._id}`)
                 );
 
                 const authorsResponse = await Promise.all(authorRequests);

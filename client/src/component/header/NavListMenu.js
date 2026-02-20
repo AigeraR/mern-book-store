@@ -35,7 +35,7 @@ export default function Example({ userName, cartItemCount }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/category/getAllCategories');
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/category/getAllCategories');
         setMenu(response.data || []);
       } catch (error) {
         console.log(error);

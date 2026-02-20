@@ -23,27 +23,27 @@ const Books = () => {
     }, []);
 
     const fetchBooks = async () => {
-        const response = await axios.get('http://localhost:5000/api/books/allBook');
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/books/allBook');
         setBooks(response.data);
     };
 
     const fetchAuthors = async () => {
-        const response = await axios.get('http://localhost:5000/api/author/getAuthors');
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/author/getAuthors');
         setAuthors(response.data);
     };
 
     const fetchCategories = async () => {
-        const response = await axios.get('http://localhost:5000/api/category/getAllCategories');
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/category/getAllCategories');
         setCategories(response.data);
     };
 
     const fetchPublishers = async () => {
-        const response = await axios.get('http://localhost:5000/api/publisher/getAll');
+        const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/publisher/getAll');
         setPublishers(response.data);
     };
 
     const handleDeleteBook = async (bookId) => {
-        await axios.delete(`http://localhost:5000/api/books/delete/${bookId}`, {
+        await axios.delete(`https://mern-book-store-pg5d.onrender.com/api/books/delete/${bookId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -55,7 +55,7 @@ const Books = () => {
             const newAuthor = await authors.find(author => author._id === updatedBook.author._id);
             updatedBook = { ...updatedBook, author: newAuthor };
         }
-        await axios.put(`http://localhost:5000/api/books/update/${bookId}`, updatedBook, {
+        await axios.put(`https://mern-book-store-pg5d.onrender.com/api/books/update/${bookId}`, updatedBook, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -109,7 +109,7 @@ const Books = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.get(`http://localhost:5000/api/category/getSubcategoryArray/${categoryId}`, config);
+            const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/category/getSubcategoryArray/${categoryId}`, config);
             setSubcategories(response.data);
         } catch (error) {
             console.error('Error fetching subcategories:', error);

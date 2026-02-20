@@ -17,7 +17,7 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/books/searchByName/${searchTerm}`);
+        const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/books/searchByName/${searchTerm}`);
         setBooks(response.data);
       } catch (error) {
         console.error('Error fetching search results:', error);

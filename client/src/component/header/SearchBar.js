@@ -13,7 +13,7 @@ const SearchBar = ({ className }) => {
   useEffect(() => {
     const handleSearch = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/books/searchByName/${searchTerm}`);
+        const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/books/searchByName/${searchTerm}`);
         setSearchResults(response.data);
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -28,7 +28,7 @@ const SearchBar = ({ className }) => {
   }, [searchTerm]);
    const getBookAuthorbyId = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/author/getAuthorByID/${id}`);
+      const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/author/getAuthorByID/${id}`);
       return response.data;
     } catch (error) {
       console.error(error);

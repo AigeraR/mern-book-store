@@ -21,7 +21,7 @@ const CatalogPage = () => {
     const [priceRange, setPriceRange] = useState([0, 2000]); // Default price range
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/category/getAllCategories')
+        axios.get('https://mern-book-store-pg5d.onrender.com/api/category/getAllCategories')
             .then(response => {
                 setCategories(response.data);
             })
@@ -31,13 +31,13 @@ const CatalogPage = () => {
     }, []);
 
     useEffect(() => {
-        let url = 'http://localhost:5000/api/books/allBook';
+        let url = 'https://mern-book-store-pg5d.onrender.com/api/books/allBook';
         if (location.pathname === '/catalog/bestseller') {
-            url = 'http://localhost:5000/api/books/bestsellers'; // Убедитесь, что ваш сервер имеет соответствующий маршрут
+            url = 'https://mern-book-store-pg5d.onrender.com/api/books/bestsellers'; // Убедитесь, что ваш сервер имеет соответствующий маршрут
         } else if (subcategoryId) {
-            url = `http://localhost:5000/api/books/subcategory/${subcategoryId}`;
+            url = `https://mern-book-store-pg5d.onrender.com/api/books/subcategory/${subcategoryId}`;
         } else if (categoryId) {
-            url = `http://localhost:5000/api/books/category/${categoryId}`;
+            url = `https://mern-book-store-pg5d.onrender.com/api/books/category/${categoryId}`;
         }
 
         axios.get(url)

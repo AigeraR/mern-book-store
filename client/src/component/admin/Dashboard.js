@@ -11,7 +11,7 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.get('http://localhost:5000/api/auth/getAllusers', config);
+            const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/auth/getAllusers', config);
             setTotalUsers(response.data.length);
         } catch (error) {
             console.log(error);
@@ -21,7 +21,7 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.get('http://localhost:5000/api/books/allBook', config);
+            const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/books/allBook', config);
             setTotalBooks(response.data.length);
         } catch (error) {
             console.log(error);

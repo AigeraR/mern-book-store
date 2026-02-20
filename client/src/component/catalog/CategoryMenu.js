@@ -18,7 +18,7 @@ const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selecte
 
     const fetchAuthors = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/author/getAuthors');
+            const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/author/getAuthors');
             setAuthors(response.data);
         } catch (error) {
             console.error('Error fetching authors:', error);
@@ -27,7 +27,7 @@ const CategoryMenu = ({ categories, selectedAuthors, setSelectedAuthors, selecte
 
     const fetchPublishers = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/publisher/getAll');
+            const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/publisher/getAll');
             setPublishers(response.data);
         } catch (error) {
             console.error('Error fetching publishers:', error);

@@ -30,13 +30,13 @@ const AddBook = ({ fetchBooks }) => {
   }, []);
 
   const fetchPublishers = async () => {
-    const response = await axios.get('http://localhost:5000/api/publisher/getAll');
+    const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/publisher/getAll');
     setPublishers(response.data);
   };
 
   const fetchAuthors = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/author/getAuthors');
+      const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/author/getAuthors');
       setAuthors(response.data);
     } catch (error) {
       console.error('Error fetching authors:', error);
@@ -44,12 +44,12 @@ const AddBook = ({ fetchBooks }) => {
   };
 
   const fetchCategories = async () => {
-    const response = await axios.get('http://localhost:5000/api/category/getAllCategories');
+    const response = await axios.get('https://mern-book-store-pg5d.onrender.com/api/category/getAllCategories');
     setCategories(response.data);
   };
 
   const fetchSubcategories = async () => {
-    const response = await axios.get(`http://localhost:5000/api/subcategory/getAll`);
+    const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/subcategory/getAll`);
     setSubcategories(response.data);
   };
 
@@ -57,7 +57,7 @@ const AddBook = ({ fetchBooks }) => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.get(`http://localhost:5000/api/category/getSubcategoryArray/${categoryId}`, config);
+      const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/category/getSubcategoryArray/${categoryId}`, config);
       setSubcategories(response.data);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -68,7 +68,7 @@ const AddBook = ({ fetchBooks }) => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.post('http://localhost:5000/api/books/addBook', newBook, config);
+      await axios.post('https://mern-book-store-pg5d.onrender.com/api/books/addBook', newBook, config);
 
       setNewBook({
         title: '',

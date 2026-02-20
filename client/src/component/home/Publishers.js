@@ -9,7 +9,7 @@ const Publishers = () => {
     const [publishers, setPublishers] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/publisher/getAll')
+        axios.get('https://mern-book-store-pg5d.onrender.com/api/publisher/getAll')
             .then(response => setPublishers(response.data))
             .catch(error => console.error('Error fetching publishers:', error));
     }, []);
