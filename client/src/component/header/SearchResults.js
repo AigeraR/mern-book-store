@@ -18,7 +18,7 @@ const SearchResults = () => {
             setLoading(true);
             try {
                 // ВАЖНО: Используем новый эндпоинт, который ищет по всему
-                const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/books/search?query=${query}`);
+                const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/books/searchByName/${query}`);
                 setBooks(response.data);
             } catch (error) {
                 console.error('Ошибка поиска:', error);

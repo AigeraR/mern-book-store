@@ -184,15 +184,23 @@ exports.getBooksByAuthor = async (req, res) => {
   
 
 exports.searchBooksByName = async (req, res) => {
-    const searchTerm = req.params.name;
+    const searchTerm = req.params.name; // Это то, что ввел пользователь (например "мат" или "чынгыз")
+    
     try {
-        const authors = await Author.find({ name: { $regex: new RegExp(searchTerm, 'i') } });
+        // 1. Создаем регулярное выражение для поиска части слова, регистронезависимое ('i')
+        const regex = new RegExp(searchTerm, 'i');
+
+        // 2. Ищем всех авторов, чье имя подходит под запрос
+        const authors = await Author.find({ name: { $regex: regex } });
         const authorIds = authors.map(author => author._id);
 
+        // 3. Ищем книги: 
+        // Либо название совпадает с regex
+        // Либо ID автора находится в списке найденных authorIds
         const books = await Book.find({
             $or: [
-                { title: { $regex: new RegExp(searchTerm, 'i') } }, 
-                { author: { $in: authorIds } }                      
+                { title: { $regex: regex } },
+                { author: { $in: authorIds } }
             ]
         })
         .populate('author')
@@ -202,8 +210,8 @@ exports.searchBooksByName = async (req, res) => {
 
         res.json(books);
     } catch (error) {
-        console.error('Search error:', error);
-        res.status(500).json({ message: 'Server Error' });
+        console.error('Ошибка расширенного поиска:', error);
+        res.status(500).json({ message: 'Ошибка сервера при поиске' });
     }
 };
   
