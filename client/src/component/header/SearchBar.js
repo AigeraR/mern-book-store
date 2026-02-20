@@ -1,93 +1,104 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { TERipple } from 'tw-elements-react';
 import axios from 'axios';
-import BookCard from '../catalog/BookCard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SearchBar = ({ className }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const searchResultsRef = useRef(null);
+  const navigate = useNavigate();
 
+  // Профессиональный подход: Debounce (задержка запроса)
+  // Чтобы не перегружать сервер Render на каждом нажатии клавиши
   useEffect(() => {
-    const handleSearch = async () => {
-      try {
-        const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/books/searchByName/${searchTerm}`);
-        setSearchResults(response.data);
-      } catch (error) {
-        console.error('Error fetching search results:', error);
+    const delayDebounceFn = setTimeout(async () => {
+      if (searchTerm.trim().length >= 2) {
+        setIsLoading(true);
+        try {
+          // Используем твой рабочий URL
+          const response = await axios.get(
+            `https://mern-book-store-pg5d.onrender.com/api/books/searchByName/${searchTerm}`
+          );
+          setSearchResults(response.data);
+        } catch (error) {
+          console.error('Search error:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setSearchResults([]);
       }
-    };
+    }, 400); // Задержка 400мс
 
-    if (searchTerm.trim() !== '') {
-      handleSearch();
-    } else {
-      setSearchResults([]);
-    }
+    return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
-   const getBookAuthorbyId = async (id) => {
-    try {
-      const response = await axios.get(`https://mern-book-store-pg5d.onrender.com/api/author/getAuthorByID/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-   }
-  // Close search results when clicking outside
+
+  // Закрытие при клике вне области поиска
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (searchResultsRef.current && !searchResultsRef.current.contains(e.target)) {
         setSearchResults([]);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/search?query=${searchTerm}`);
+      setSearchResults([]);
+    }
+  };
 
   return (
     <div className={`relative ${className}`} ref={searchResultsRef}>
-      <div className="flex items-center border border-gray-300 bg-white  ml-4 xl:ml-0 lg:ml-0 md:ml-5  shadow-md rounded-md lg:w-auto">
+      <form onSubmit={handleSearchSubmit} className="relative flex items-center bg-white border border-gray-300 shadow-sm rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-400 transition-all">
+        <FiSearch className="absolute left-3 text-gray-400 w-5 h-5" />
         <input
-          type="search"
-          className="relative flex-grow bg-transparent outline-none text-gray-700 placeholder-gray-500 px-14 py-2 rounded-l-md border-none"
-          placeholder="Поиск книг..."
-          aria-label="Search"
+          type="text"
+          className="w-full py-2.5 pl-10 pr-4 outline-none text-gray-700 placeholder-gray-400"
+          placeholder="Найти книгу или автора..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <FiSearch className="absolute items-center ml-2 text-gray-500 h-6 w-6" />
-        <TERipple color="light">
-          <button
-            className="flex items-center justify-center p-2 text-white bg-main-color shadow-main-color hover:bg-primary-700 focus:outline-none"
-            type="button"
-          >
-            <p className="px-3 font-open-sans">найти</p>
-          </button>
-        </TERipple>
-      </div>
-      {/* Display search results */}
+        {isLoading && (
+          <div className="absolute right-20 animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+        )}
+        <button type="submit" className="bg-blue-600 text-white px-6 py-2.5 font-medium hover:bg-blue-700 transition-colors">
+          Найти
+        </button>
+      </form>
+
+      {/* Быстрые результаты (Dropdown) */}
       {searchResults.length > 0 && (
-        <div className="absolute z-50 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
-          {searchResults.map((book) => (
-            <div key={book._id} className="flex items-center justify-between p-2 border-b border-gray-200">
-              <Link to={`/book/${book._id}`}>
-              <div className='flex items-center space-x-5'>
+        <div className="absolute z-[100] mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden">
+          <div className="p-2 text-xs font-semibold text-gray-400 uppercase tracking-wider bg-gray-50">
+            Результаты поиска
+          </div>
+          <div className="max-h-[400px] overflow-y-auto">
+            {searchResults.map((book) => (
+              <Link
+                key={book._id}
+                to={`/book/${book._id}`}
+                onClick={() => setSearchResults([])}
+                className="flex items-center p-3 hover:bg-blue-50 transition-colors border-b border-gray-50 last:border-none"
+              >
                 <img
-                  src={book.image}
+                  src={book.image || 'https://via.placeholder.com/150'}
                   alt={book.title}
-                  className="w-10 h-10 object-cover rounded-md shadow-md "
-                  onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/150"; }}
+                  className="w-10 h-14 object-cover rounded shadow-sm"
                 />
-                <h3 className="font-semibold text-gray-600 text-sm hover:text-blue-500">{book.title}</h3>               
-              </div>
-                
+                <div className="ml-4">
+                  <div className="text-sm font-bold text-gray-800 line-clamp-1">{book.title}</div>
+                  <div className="text-xs text-gray-500">{book.author?.name || 'Автор неизвестен'}</div>
+                </div>
               </Link>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>

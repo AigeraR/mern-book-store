@@ -3,7 +3,10 @@
 A robust, full-stack e-commerce platform built using the MERN stack. This application provides a seamless shopping experience for customers and a powerful management dashboard for administrators.
 
 ---
+## 🔗 Live Demo
+🚀 **[View Project Live](https://mern-book-store-indol.vercel.app/)** *(Note: The backend is hosted on a free tier, so it may take 30-60 seconds to wake up on the first request.)*
 
+---
 
 ## 🚀 Key Functionalities
 

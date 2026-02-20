@@ -154,15 +154,6 @@ exports.getBooksBySubcategory = async (req, res) => {
     }
 };
 
-// // Get books by publisher
-// exports.getBooksByPublisher = async (req, res) => {
-//     try {
-//         const books = await Book.find({ publisher: req.params.publisher }).populate('author').populate('category').populate('subcategory').populate('publisher');
-//         res.json(books);
-//     } catch (err) {
-//         res.status(500).json({ message: err.message });
-//     }
-// };
 
 exports.getBooksByCategoryId = async (req, res) => {
     try {
@@ -191,16 +182,30 @@ exports.getBooksByAuthor = async (req, res) => {
     }
   };
   
-  // Получение книг по частичному совпадению названия
-  exports.searchBooksByName = async (req, res) => {
-    const name = req.params.name;
+
+exports.searchBooksByName = async (req, res) => {
+    const searchTerm = req.params.name;
     try {
-      const books = await Book.find({ title: { $regex: new RegExp(name, 'i') } });
-      res.json(books);
+        const authors = await Author.find({ name: { $regex: new RegExp(searchTerm, 'i') } });
+        const authorIds = authors.map(author => author._id);
+
+        const books = await Book.find({
+            $or: [
+                { title: { $regex: new RegExp(searchTerm, 'i') } }, 
+                { author: { $in: authorIds } }                      
+            ]
+        })
+        .populate('author')
+        .populate('category')
+        .populate('subcategory')
+        .populate('publisher');
+
+        res.json(books);
     } catch (error) {
-      res.status(500).json({ message: 'Server Error' });
+        console.error('Search error:', error);
+        res.status(500).json({ message: 'Server Error' });
     }
-  };
+};
   
   // Получение книг по издательству
   exports.getBooksByPublisher = async (req, res) => {
