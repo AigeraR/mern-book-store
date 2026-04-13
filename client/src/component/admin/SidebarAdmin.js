@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { AiOutlineUser } from 'react-icons/ai';
-import { FaRegAddressCard } from "react-icons/fa";
-import { MdBorderColor } from "react-icons/md";
-import { CiBookmark } from "react-icons/ci";
-import { FcSms } from "react-icons/fc";
-import { GiBuyCard } from "react-icons/gi";
-import { BiCategory } from "react-icons/bi";
-import { MdCategory } from "react-icons/md";
-import { FaBook } from "react-icons/fa";
-import { FaPersonBooth } from "react-icons/fa";
-import { ImOffice } from "react-icons/im";
-import { HiUsers } from "react-icons/hi";
-
-
-
+import { 
+  FiGrid, 
+  FiUsers, 
+  FiLayers, 
+  FiHash, 
+  FiBook, 
+  FiUser, 
+  FiHome, 
+  FiLogOut,
+  FiUserPlus
+} from "react-icons/fi"; // Набор более современных и тонких иконок
 
 const SidebarAdmin = () => {
   const [avatar, setAvatar] = useState(localStorage.getItem('avatar') || '');
@@ -50,7 +46,7 @@ const SidebarAdmin = () => {
       if (response.ok) {
         localStorage.removeItem('userName');
         localStorage.removeItem('avatar');
-        navigate('/'); // Перенаправляем на главную страницу после выхода
+        navigate('/'); 
       } else {
         console.error('Ошибка при выходе из аккаунта:', response.statusText);
       }
@@ -59,29 +55,28 @@ const SidebarAdmin = () => {
     }
   };
 
-  const navLinkStyle = ({ isActive }) => isActive ? 'block py-2 px-4 bg-gray-200  rounded-md' : 'block py-2 px-4   rounded-md';
+  // Твои стили без изменений
+  const navLinkStyle = ({ isActive }) => isActive ? 'block py-2 px-4 bg-gray-200 rounded-md transition-all' : 'block py-2 px-4 rounded-md transition-all hover:bg-gray-50';
+  
   const navLinks = [
-    { text: 'Панель', to: "/admin", icon: <AiOutlineUser className="inline-block mr-2 bg-blue-500 text-white p-2 rounded-full" /> },
-    { text: 'Пользователь', to: "/admin/users", icon: <HiUsers className="inline-block mr-2 text-green-500" /> },
-    // { text: 'Заказы', to: "/admin/orders", icon: <GiBuyCard className="inline-block mr-2 text-purple-600" /> },
-    { text: 'Категории', to: "/admin/categories", icon: <BiCategory className="inline-block mr-2 text-orange-700" /> },
-    { text: 'Подкатегории', to: "/admin/subcategories", icon: <MdCategory className="inline-block mr-2 text-green-500" /> },
-    { text: 'Книги', to: "/admin/books", icon: <FaBook className="inline-block mr-2 text-red-900" /> },
-    {text: 'Авторы', to: "/admin/authors", icon: <FaPersonBooth className="inline-block mr-2 text-yellow-400" />},
-    {text: 'Издательства', to: "/admin/publishers", icon: <ImOffice className="inline-block mr-2  text-pink-700" />},
-    // { text: 'Сообщения', to: "/admin/messages", icon: <FcSms className="inline-block mr-2" /> },
-
+    { text: 'Панель', to: "/admin", icon: <FiGrid className="inline-block mr-2 bg-blue-500 text-white p-2 rounded-full shadow-sm" /> },
+    { text: 'Пользователь', to: "/admin/users", icon: <FiUsers className="inline-block mr-2 text-green-500 text-xl" /> },
+    { text: 'Категории', to: "/admin/categories", icon: <FiLayers className="inline-block mr-2 text-orange-600 text-xl" /> },
+    { text: 'Подкатегории', to: "/admin/subcategories", icon: <FiHash className="inline-block mr-2 text-green-500 text-xl" /> },
+    { text: 'Книги', to: "/admin/books", icon: <FiBook className="inline-block mr-2 text-red-700 text-xl" /> },
+    { text: 'Авторы', to: "/admin/authors", icon: <FiUser className="inline-block mr-2 text-yellow-500 text-xl" /> },
+    { text: 'Издательства', to: "/admin/publishers", icon: <FiHome className="inline-block mr-2 text-pink-700 text-xl" /> },
   ];
 
   return (
-    <div className=" rounded-md shadow-md p-4">
+    <div className="rounded-md shadow-md p-4 bg-white">
       <div className="flex flex-col items-center mb-4">
-        <div className="rounded-full overflow-hidden mb-2">
+        <div className="rounded-full overflow-hidden mb-2 ring-2 ring-gray-100 shadow-sm">
           {avatar ? (
             <img src={avatar} alt="User Avatar" className="w-20 h-20 object-cover" />
           ) : (
-            <div className="w-12 h-12 bg-blue-300 flex items-center justify-center rounded-full">
-              <AiOutlineUser className="" />
+            <div className="w-12 h-12 bg-blue-100 flex items-center justify-center rounded-full text-blue-600">
+              <FiUserPlus size={24} />
             </div>
           )}
         </div>
@@ -92,21 +87,24 @@ const SidebarAdmin = () => {
           className="hidden"
           id="avatar-upload"
         />
-        <label htmlFor="avatar-upload" className="text-blue-500 cursor-pointer text-sm mb-2">Выбрать аватар</label>
-        <h1 className="text-lg font-semibold ">{userName}</h1>
+        <label htmlFor="avatar-upload" className="text-blue-500 hover:text-blue-700 cursor-pointer text-xs font-medium mb-2 transition-colors">Выбрать аватар</label>
+        <h1 className="text-lg font-bold text-gray-800">{userName}</h1>
       </div>
-      <ul className="flex flex-col">
+
+      <ul className="flex flex-col gap-1">
         {navLinks.map(({ text, to, icon }) => (
           <li key={to}>
             <NavLink to={to} className={navLinkStyle} end>
               {icon}
-              <span className="ml-2">{text}</span>
+              <span className="ml-2 font-medium text-gray-700">{text}</span>
             </NavLink>
           </li>
         ))}
       </ul>
-      <button onClick={handleLogout} className="w-full mt-6 py-2 px-4 text-center bg-red-600 text-white rounded-md hover:bg-red-700">
-        Выйти
+
+      <button onClick={handleLogout} className="w-full mt-6 py-2.5 px-4 flex items-center justify-center gap-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all shadow-md active:scale-95">
+        <FiLogOut />
+        <span>Выйти</span>
       </button>
     </div>
   );

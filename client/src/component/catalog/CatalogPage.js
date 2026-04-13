@@ -33,7 +33,7 @@ const CatalogPage = () => {
     useEffect(() => {
         let url = 'https://mern-book-store-pg5d.onrender.com/api/books/allBook';
         if (location.pathname === '/catalog/bestseller') {
-            url = 'https://mern-book-store-pg5d.onrender.com/api/books/bestsellers'; // Убедитесь, что ваш сервер имеет соответствующий маршрут
+            url = 'https://mern-book-store-pg5d.onrender.com/api/books/bestsellers'; 
         } else if (subcategoryId) {
             url = `https://mern-book-store-pg5d.onrender.com/api/books/subcategory/${subcategoryId}`;
         } else if (categoryId) {

@@ -1,81 +1,64 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTimes } from "react-icons/fa";
 
 const AddAuthor = ({ handleAddAuthor }) => {
-    const [name, setName] = useState('');
-    const [bio, setBio] = useState('');
-    const [img, setImage] = useState('');
-    const [error, setError] = useState('');
-    const [open, setOpen] = useState(false);
-    const [birthdate, setBirthdate] = useState('');
+    const [form, setForm] = useState({ name: '', bio: '', img: '', birthdate: '' });
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const config = { headers: { Authorization: `Bearer ${token}` } };
-            
-            // Проверка на пустые обязательные поля перед отправкой запроса
-            if (!name || !bio || !img || !birthdate) {
-                setError('Please fill in all fields.');
-                return;
-            }
-
-            const response = await axios.post('https://mern-book-store-pg5d.onrender.com/api/author/create', { name, bio, img, birthdate }, config);
-            handleAddAuthor(response.data);
-            setName('');
-            setBio('');
-            setImage('');
-            setBirthdate('');
-            setError('');
-            setOpen(false); // Закрыть форму после успешного добавления автора
-        } catch (error) {
-            setError(error.response.data.message || 'An error occurred while adding the author.');
+            const res = await axios.post('https://mern-book-store-pg5d.onrender.com/api/author/create', form, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            handleAddAuthor(res.data);
+            setIsOpen(false);
+            setForm({ name: '', bio: '', img: '', birthdate: '' });
+        } catch (err) {
+            alert('Ошибка при сохранении');
+        } finally {
+            setLoading(false);
         }
     };
-    
 
     return (
-        <div>
-            <button onClick={() => setOpen(true)} className="bg-green-500 text-white p-2 rounded-lg mr-2"><FaPlus className='h-4 w-4' /> Добавить автора</button>
-            {open && (
-                <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-                    <h3 className="text-xl font-bold mb-4">Добавить автора</h3>
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Имя"
-                            className="border p-2 mb-2 w-full"
-                        />
-                        <textarea
-                            value={bio}
-                            onChange={(e) => setBio(e.target.value)}
-                            placeholder="Биография"
-                            className="border p-2 mb-2 w-full"
-                        />
-                        <input
-                            type="text"
-                            value={img}
-                            onChange={(e) => setImage(e.target.value)}
-                            placeholder="Ссылка на изображение"
-                            className="border p-2 mb-2 w-full"
-                        />
-                        <input
-                            type="date"
-                            value={birthdate}
-                            onChange={(e) => setBirthdate(e.target.value)}
-                            placeholder="Дата рождения"
-                            className="border p-2 mb-2 w-full"
-                        />
-                        <button type="submit" className="bg-green-500 text-white p-2 rounded-lg">Добавить</button>
-                        {error && <p className="text-red-500 mt-2">{error}</p>}
-                    </form>
+        <>
+            <button onClick={() => setIsOpen(true)} className="flex items-center gap-2 bg-black text-white px-5 py-2.5 rounded-full hover:bg-gray-800 transition text-sm font-medium shadow-lg">
+                <FaPlus size={12} /> Добавить автора
+            </button>
+
+            {isOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+                    <div className="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl relative">
+                        <button onClick={() => setIsOpen(false)} className="absolute top-6 right-6 text-gray-400 hover:text-black">
+                            <FaTimes size={18} />
+                        </button>
+                        
+                        <h2 className="text-2xl font-bold mb-6 tracking-tight">Новый автор</h2>
+                        
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <input name="name" placeholder="Имя автора" value={form.name} onChange={handleChange} className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black outline-none transition" required />
+                            <textarea name="bio" placeholder="Биография" value={form.bio} onChange={handleChange} className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black outline-none transition h-24" required />
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                                <input name="birthdate" type="date" value={form.birthdate} onChange={handleChange} className="bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black outline-none text-sm" required />
+                                <input name="img" placeholder="URL фото" value={form.img} onChange={handleChange} className="bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black outline-none text-sm" required />
+                            </div>
+
+                            <button type="submit" disabled={loading} className="w-full bg-black text-white py-4 rounded-2xl font-semibold mt-4 hover:bg-gray-800 transition disabled:bg-gray-400">
+                                {loading ? 'Загрузка...' : 'Сохранить профиль'}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 
